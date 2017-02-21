@@ -1,0 +1,11 @@
+
+                 failures |       0 ==   0 | true
+                   errors |       0 ==   0 | true
+                    skips |       0 ==   0 | true
+             assertions/s |     781 >= 200 | true
+        duration(test)[s] |     0.1 <=   1 | true
+         coverage(src)[%] |   88.14 == 100 | false
+        coverage(test)[%] |   100.0 == 100 | true
+       hits_per_line(src) |   13.42 <=  60 | true
+      hits_per_line(test) |     3.0 <=   3 | true
+   lines(test)/lines(src) |    1.50 >= 1.4 | true
