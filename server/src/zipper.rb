@@ -10,8 +10,7 @@ class Zipper
   attr_reader :parent
 
   def zip_json(kata_id)
-    # Create files off /tmp in new non-git format
-    zip_path = '/tmp/cyber-dojo/zips'
+    # Create tgz file in storer's json format
     kata_path = "#{zip_path}/#{outer(kata_id)}/#{inner(kata_id)}"
     kata_dir = disk[kata_path]
     kata_dir.make
@@ -42,8 +41,7 @@ class Zipper
   # - - - - - - - - - - - - - - - - - - - - -
 
   def zip_git(kata_id)
-    # Create files off /tmp in git format
-    zip_path = '/tmp/cyber-dojo/zips'
+    # Create tgz file in git format
     kata_path = "#{zip_path}/#{outer(kata_id)}/#{inner(kata_id)}"
     kata_dir = disk[kata_path]
     kata_dir.make
@@ -60,6 +58,10 @@ class Zipper
   end
 
   private
+
+  def zip_path
+    ENV['CYBER_DOJO_ZIPPER_ROOT']
+  end
 
   include IdSplitter
 

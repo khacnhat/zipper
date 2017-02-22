@@ -1,16 +1,29 @@
 
 version: '2'
 
+volumes:
+  tmp_zipper:
+
 services:
 
-  # TODO: Add zipper_client
-  # TODO: add shared /tmp/cyber-dojo/zipper to zipper-client and zipper-server
+  zipper_client:
+    user: nobody
+    image: cyberdojo/zipper
+    container_name: zipper_client
+    #read_only: true
+    #tmpfs: /tmp
+    environment: [ CYBER_DOJO_ZIPPER_ROOT=/tmp/cyber-dojo/zips ]
+    volumes:
+        - tmp_zipper:/tmp:ro
 
   zipper:
-  # TODO:Add downloader_client which can see shared /tmp folder...
     user: nobody
     image: cyberdojo/zipper
     container_name: zipper_server
+    environment: [ CYBER_DOJO_ZIPPER_ROOT=/tmp/cyber-dojo/zips ]
+    #tmpfs: /tmp
+    volumes:
+        - tmp_zipper:/tmp:rw
     build:
       context: server
       args:
