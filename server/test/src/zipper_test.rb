@@ -73,7 +73,10 @@ class ZipperTest < ZipperTestBase
         avatar_path = "#{kata_path}/#{avatar_name}"
         zipper_rags = disk[avatar_path].read_json('increments.json')
         storer_rags = storer.avatar_increments(id, avatar_name)
-        storer_rags.shift # tag0 is special
+        # storer does not store tag0 is each avatar's manifest.
+        # Retain this form so a tgz file can be copied between
+        # storers on different servers.
+        storer_rags.shift
         assert_equal storer_rags, zipper_rags, 'increments are the same'
 
         (1..zipper_rags.size).each do |tag|
@@ -91,7 +94,15 @@ class ZipperTest < ZipperTestBase
     Dir.mktmpdir('zipper') do |tmp_dir|
       _,status = shell.cd_exec(tmp_dir, "cat #{tgz_filename} | tar xfz -")
       assert_equal 0, status
+
+      kata_path = "#{tmp_dir}/#{outer(id)}/#{inner(id)}"
+      zipper_manifest = disk[kata_path].read_json('manifest.json')
+      storer_manifest = storer.kata_manifest(id)
+      assert_equal storer_manifest, zipper_manifest, 'manifests are the same'
+
+=begin
       # TODO...
+=end
     end
   end
 

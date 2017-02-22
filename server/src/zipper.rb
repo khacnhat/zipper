@@ -19,8 +19,13 @@ class Zipper
       avatar_path = "#{kata_path}/#{avatar_name}"
       avatar_dir = disk[avatar_path]
       avatar_dir.make
+
       rags = storer.avatar_increments(kata_id, avatar_name)
-      rags.shift # tag0
+      # storer does not store tag0 is each avatar's manifest.
+      # Retain this form so a tgz file can be copied between
+      # storers on different servers.
+      rags.shift
+
       avatar_dir.write_json('increments.json', rags)
       (1..rags.size).each do |tag|
         tag_path = "#{avatar_path}/#{tag}"
@@ -47,8 +52,34 @@ class Zipper
     kata_dir.make
     kata_dir.write_json('manifest.json', storer.kata_manifest(kata_id))
 
-    # create git repo
-    # TODO...
+=begin
+    storer.started_avatars(kata_id).each do |avatar_name|
+      avatar_path = "#{kata_path}/#{avatar_name}"
+      avatar_dir = disk[avatar_path]
+      avatar_dir.make
+      git.setup(avatar_path, avatar_name, "#{avatar_name}@cyber-dojo.org")
+      sandbox_path = "#{avatar_path}/sandbox"
+      sandbox_dir = disk[sandbox_path]
+      sandbox_dir.make
+      rags = storer.avatar_increments(kata_id, avatar_name)
+      (0..rags.size).each do |tag|
+        # TODO: ensure git repos are in exact form I used to use
+        # that way they too can be copied from one storer to another.
+        avatar_dir.write_json('increments.json', rags[1..tag])
+        git.add(avatar_path, 'increments.json')
+        visible_files = storer.tag_visible_files(kata_id, avatar_name, tag)
+        visible_files.each do |filename, content|
+          sandbox_dir.write(filename, content)
+          git.add(sandbox_path, filename)
+        end
+        git.commit(avatar_path, tag)
+        visible_files.keys.each do |filename|
+          git.rm(sandbox_path, filename)
+        end
+        git.rm(avatar_path, 'increments.json')
+      end
+    end
+=end
 
     cd_cmd = "cd #{zip_path}"
     tgz_filename = "#{zip_path}/#{kata_id}.tgz"
