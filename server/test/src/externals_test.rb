@@ -11,13 +11,6 @@ class ExternalsTest < ZipperTestBase
 
   # - - - - - - - - - - - - - - - - -
 
-  test 'C8F',
-  'default git is ExternalGitter' do
-    assert_equal 'ExternalGitter', git.class.name
-  end
-
-  # - - - - - - - - - - - - - - - - -
-
   test '3EC',
   'default log is ExternalStdoutLogger' do
     assert_equal 'ExternalStdoutLogger', log.class.name

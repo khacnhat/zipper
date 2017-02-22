@@ -13,46 +13,26 @@ class ZipperTest < ZipperTestBase
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test 'BEC',
-  'zip_json with empty id raises' do
-    error = assert_raises(StandardError) { zip_json(id = '') }
-    assert_equal 'StorerService:kata_manifest:Storer:invalid kata_id', error.message
-  end
-
-  test 'BED',
-  'zip_git with empty id raises' do
-    error = assert_raises(StandardError) { zip_git(id = '') }
+  'zip with empty id raises' do
+    error = assert_raises(StandardError) { zip(id = '') }
     assert_equal 'StorerService:kata_manifest:Storer:invalid kata_id', error.message
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '849',
-  'zip_json with bad id raises' do
-    error = assert_raises(StandardError) { zip_json(id = 'XX') }
-    assert_equal 'StorerService:kata_manifest:Storer:invalid kata_id', error.message
-  end
-
-  test '850',
-  'zip_git with bad id raises' do
-    error = assert_raises(StandardError) { zip_git(id = 'XX') }
+  'zip with bad id raises' do
+    error = assert_raises(StandardError) { zip(id = 'XX') }
     assert_equal 'StorerService:kata_manifest:Storer:invalid kata_id', error.message
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '561',
-  'zip_json format is ready for saving directly into storer' do
+  'zip format is ready for saving directly into storer' do
     ids.each do |id|
-      tgz_filename = zip_json(id)
+      tgz_filename = zip(id)
       assert_json_zipped(id, tgz_filename)
-    end
-  end
-
-  test '562',
-  'zip_git format is useful for creating new start-points' do
-    ids.each do |id|
-      tgz_filename = zip_git(id)
-      assert_git_zipped(id, tgz_filename)
     end
   end
 
@@ -86,23 +66,6 @@ class ZipperTest < ZipperTestBase
           assert_equal storer_tag, zipper_tag, "tag is are the same"
         end
       end
-    end
-  end
-
-  def assert_git_zipped(id, tgz_filename)
-    assert File.exists?(tgz_filename), "File.exists?(#{tgz_filename})"
-    Dir.mktmpdir('zipper') do |tmp_dir|
-      _,status = shell.cd_exec(tmp_dir, "cat #{tgz_filename} | tar xfz -")
-      assert_equal 0, status
-
-      kata_path = "#{tmp_dir}/#{outer(id)}/#{inner(id)}"
-      zipper_manifest = disk[kata_path].read_json('manifest.json')
-      storer_manifest = storer.kata_manifest(id)
-      assert_equal storer_manifest, zipper_manifest, 'manifests are the same'
-
-=begin
-      # TODO...
-=end
     end
   end
 

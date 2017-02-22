@@ -3,11 +3,7 @@ require 'net/http'
 
 module ZipperService # mix-in
 
-  def zip_json(kata_id)
-    post(__method__, kata_id)
-  end
-
-  def zip_git(kata_id)
+  def zip(kata_id)
     post(__method__, kata_id)
   end
 

@@ -5,12 +5,8 @@ class ZipperTestBase < HexMiniTest
 
   include Externals
 
-  def zip_json(id)
-    zipper.zip_json(id)
-  end
-
-  def zip_git(id)
-    zipper.zip_git(id)
+  def zip(id)
+    zipper.zip(id)
   end
 
 end
