@@ -10,7 +10,7 @@ if [ ! -f /.dockerenv ]; then
   exit 1
 fi
 
-cov_dir=/tmp/coverage
+cov_dir=${CYBER_DOJO_COVERAGE_ROOT}
 mkdir ${cov_dir}
 test_log=${cov_dir}/test.log
 
