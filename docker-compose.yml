@@ -24,8 +24,8 @@ services:
     image: cyberdojo/zipper
     container_name: zipper_server
     environment: [ CYBER_DOJO_ZIPPER_ROOT=/tmp_zipper ]
-    read_only: true
-    tmpfs: /tmp
+    #read_only: true   #coverage currently writes to /tmp/coverage
+    #tmpfs: /tmp       #coverage currently writes to /tmp/coverage
     volumes: [ "tmp_zipper:/tmp_zipper:rw" ]
     build:
       context: server

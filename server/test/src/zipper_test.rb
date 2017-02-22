@@ -13,9 +13,13 @@ class ZipperTest < ZipperTestBase
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test 'BEC',
-  'zip with empty id raises' do
+  'zip_json with empty id raises' do
     error = assert_raises(StandardError) { zip_json(id = '') }
     assert_equal 'StorerService:kata_manifest:Storer:invalid kata_id', error.message
+  end
+
+  test 'BED',
+  'zip_git with empty id raises' do
     error = assert_raises(StandardError) { zip_git(id = '') }
     assert_equal 'StorerService:kata_manifest:Storer:invalid kata_id', error.message
   end
@@ -23,9 +27,13 @@ class ZipperTest < ZipperTestBase
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '849',
-  'zip with bad id raises' do
+  'zip_json with bad id raises' do
     error = assert_raises(StandardError) { zip_json(id = 'XX') }
     assert_equal 'StorerService:kata_manifest:Storer:invalid kata_id', error.message
+  end
+
+  test '850',
+  'zip_git with bad id raises' do
     error = assert_raises(StandardError) { zip_git(id = 'XX') }
     assert_equal 'StorerService:kata_manifest:Storer:invalid kata_id', error.message
   end
@@ -33,17 +41,15 @@ class ZipperTest < ZipperTestBase
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '561',
-  'zip into json format ready for saving directly into storer' do
+  'zip_json format is ready for saving directly into storer' do
     ids.each do |id|
       tgz_filename = zip_json(id)
       assert_json_zipped(id, tgz_filename)
     end
   end
-  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
-  test 'A66',
-  'zip into git format useful for creating new start-points' do
+  test '562',
+  'zip_git format is useful for creating new start-points' do
     ids.each do |id|
       tgz_filename = zip_git(id)
       assert_git_zipped(id, tgz_filename)
@@ -54,25 +60,39 @@ class ZipperTest < ZipperTestBase
 
   def assert_json_zipped(id, tgz_filename)
     assert File.exists?(tgz_filename), "File.exists?(#{tgz_filename})"
-    #untar it into execute-around tmp dir
-    #then compare untarred content with masters retrieved from from storer
+    Dir.mktmpdir('zipper') do |tmp_dir|
+      _,status = shell.cd_exec(tmp_dir, "cat #{tgz_filename} | tar xfz -")
+      assert_equal 0, status
 
-    #manifest = storer.kata_manifest(id)
-    #compare with untarred manifest.json
+      kata_path = "#{tmp_dir}/#{outer(id)}/#{inner(id)}"
+      zipper_manifest = disk[kata_path].read_json('manifest.json')
+      storer_manifest = storer.kata_manifest(id)
+      assert_equal storer_manifest, zipper_manifest, 'manifests are the same'
 
-    #avatars = storer.started_avatars(id)
-    #compare with untarred avatar-dirs
+      storer.started_avatars(id).each do |avatar_name|
+        avatar_path = "#{kata_path}/#{avatar_name}"
+        zipper_rags = disk[avatar_path].read_json('increments.json')
+        storer_rags = storer.avatar_increments(id, avatar_name)
+        storer_rags.shift # tag0 is special
+        assert_equal storer_rags, zipper_rags, 'increments are the same'
 
-    #rags = storer.avatar_increments(id, 'lion')
-    #compare with untarred versions
-
-    #compare visible-files with those from storer
-    #files = storer.tag_visible_files(id, 'lion', 1)
+        (1..zipper_rags.size).each do |tag|
+          tag_path = "#{avatar_path}/#{tag}"
+          zipper_tag = disk[tag_path].read_json('manifest.json')
+          storer_tag = storer.tag_visible_files(id, avatar_name, tag)
+          assert_equal storer_tag, zipper_tag, "tag is are the same"
+        end
+      end
+    end
   end
 
   def assert_git_zipped(id, tgz_filename)
     assert File.exists?(tgz_filename), "File.exists?(#{tgz_filename})"
-    #...
+    Dir.mktmpdir('zipper') do |tmp_dir|
+      _,status = shell.cd_exec(tmp_dir, "cat #{tgz_filename} | tar xfz -")
+      assert_equal 0, status
+      # TODO...
+    end
   end
 
   include IdSplitter
@@ -88,42 +108,3 @@ class ZipperTest < ZipperTestBase
   end
 
 end
-
-=begin
-    # unzip new tarfile
-    tarfile_name = @tar_dir + '/' + "#{@id}.tgz"
-    assert File.exists?(tarfile_name), "File.exists?(#{tarfile_name})"
-    untar_path = @tar_dir + '/' + 'untar'
-    `rm -rf #{untar_path}`
-    `mkdir -p #{untar_path}`
-    `cd #{untar_path} && cat #{tarfile_name} | tar xfz -`
-
-    # new format dir exists for kata
-    kata_path = "#{untar_path}/#{outer(@id)}/#{inner(@id)}"
-    kata_dir = disk[kata_path]
-    assert kata_dir.exists?, '1.kata_dir.exists?'
-    assert kata_dir.exists?('manifest.json'), "2.kata_dir.exists?('manifest.json')"
-    manifest = kata_dir.read_json('manifest.json')
-    assert_equal storer.kata_manifest(@id), manifest, '3.manifests are the same'
-
-    # new format dir exists for each avatar
-    katas[@id].avatars.each do |avatar|
-      avatar_path = "#{kata_path}/#{avatar.name}"
-      avatar_dir = disk[avatar_path]
-      assert avatar_dir.exists?, '4.avatar_dir.exists?'
-      assert avatar_dir.exists?('increments.json'), "5.avatar_dir.exists?('increments.json')"
-      rags = avatar_dir.read_json('increments.json')
-      # new format dir exists for each tag
-      (1..rags.size).each do |tag|
-        tag_path = "#{avatar_path}/#{tag}"
-        tag_dir = disk[tag_path]
-        assert tag_dir.exists?, '6. tag_dir.exists?'
-        assert tag_dir.exists?('manifest.json'), "7.tag_dir.exists?('manifest.json')"
-        expected = storer.tag_visible_files(@id, avatar.name, tag)
-        actual = tag_dir.read_json('manifest.json')
-        assert_equal expected, actual, '8.manifests are the same'
-      end
-    end
-  end
-=end
-
