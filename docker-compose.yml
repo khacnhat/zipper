@@ -14,6 +14,10 @@ services:
     tmpfs: /tmp
     environment: [ CYBER_DOJO_ZIPPER_ROOT=/tmp_zipper ]
     volumes: [ "tmp_zipper:/tmp_zipper:ro" ]
+    build:
+      context: client
+      args: [ PORT=4588 ]
+    ports: [ "4588:4588" ]
 
   zipper:
     user: nobody
