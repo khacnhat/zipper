@@ -9,3 +9,4 @@ alt="cyber-dojo yin/yang logo" width="50px" height="50px"/>
 
 - A micro-service for [cyber-dojo](http://cyber-dojo.org).
 
+Work in progress. Not used yet.
