@@ -10,7 +10,7 @@ class Zipper
   attr_reader :parent
 
   def zip(kata_id)
-    # Create tgz file in storer's json format
+    # Creates tgz file in storer's json format
     kata_path = "#{zip_path}/#{outer(kata_id)}/#{inner(kata_id)}"
     kata_dir = disk[kata_path]
     kata_dir.make
@@ -21,12 +21,12 @@ class Zipper
       avatar_dir.make
 
       rags = storer.avatar_increments(kata_id, avatar_name)
-      # storer does not store tag0 is each avatar's manifest.
+      # storer does not store tag0 in each avatar's manifest.
       # Retain this form so a tgz file can be copied between
       # storers on different servers.
       rags.shift
-
       avatar_dir.write_json('increments.json', rags)
+
       (1..rags.size).each do |tag|
         tag_path = "#{avatar_path}/#{tag}"
         tag_dir = disk[tag_path]
@@ -35,11 +35,9 @@ class Zipper
         tag_dir.write_json('manifest.json', visible_files)
       end
     end
-    # and tar that
-    cd_cmd = "cd #{zip_path}"
     tgz_filename = "#{zip_path}/#{kata_id}.tgz"
     tar_cmd = "tar -zcf #{tgz_filename} #{outer(kata_id)}/#{inner(kata_id)}"
-    shell.exec(cd_cmd, tar_cmd)
+    shell.cd_exec(zip_path, tar_cmd)
     tgz_filename
   end
 
