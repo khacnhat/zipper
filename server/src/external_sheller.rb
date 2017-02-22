@@ -1,5 +1,4 @@
 require_relative 'nearest_ancestors'
-require_relative 'string_cleaner'
 
 class ExternalSheller
 
@@ -33,13 +32,12 @@ class ExternalSheller
     log << "NO-OUTPUT:" if output == ''
     log << "OUTPUT:#{output}" if output != ''
     log << "EXITED:#{exit_status}"
-    [cleaned(output), exit_status]
+    [output, exit_status]
   end
 
   private
 
   include NearestAncestors
-  include StringCleaner
 
   def log; nearest_ancestors(:log); end
 

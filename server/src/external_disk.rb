@@ -1,5 +1,4 @@
 require_relative 'nearest_ancestors'
-require_relative 'string_cleaner'
 
 class ExternalDisk
 
@@ -104,13 +103,12 @@ class ExternalDir
   end
 
   def read(filename)
-    cleaned(IO.read(path + filename))
+    IO.read(path + filename)
   end
 
   private
 
   include NearestAncestors
-  include StringCleaner
 
   attr_reader :disk
 
