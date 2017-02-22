@@ -13,8 +13,7 @@ services:
     read_only: true
     tmpfs: /tmp
     environment: [ CYBER_DOJO_ZIPPER_ROOT=/tmp_zipper ]
-    volumes:
-        - tmp_zipper:/tmp_zipper:ro
+    volumes: [ "tmp_zipper:/tmp_zipper:ro" ]
 
   zipper:
     user: nobody
@@ -23,12 +22,10 @@ services:
     environment: [ CYBER_DOJO_ZIPPER_ROOT=/tmp_zipper ]
     read_only: true
     tmpfs: /tmp
-    volumes:
-        - tmp_zipper:/tmp_zipper:rw
+    volumes: [ "tmp_zipper:/tmp_zipper:rw" ]
     build:
       context: server
-      args:
-        PORT: 4587
+      args: [ PORT=4587 ]
 
   storer:
     user: root
@@ -37,5 +34,4 @@ services:
     environment: [ CYBER_DOJO_KATAS_ROOT=/tmp/katas ]
     read_only: true
     tmpfs: /tmp
-    volumes_from:
-      - container:cyber-dojo-zipper-kata-DATA-CONTAINER:rw
+    volumes_from: [ "container:cyber-dojo-zipper-kata-DATA-CONTAINER:rw" ]
