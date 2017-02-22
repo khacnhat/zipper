@@ -10,12 +10,7 @@ class ZipperTest < ZipperTestBase
     @log ||= NullLogger.new(self)
   end
 
-  # TODO:
-  # Use prepared volume mounted into storer.
-  # Like I did for storer/server/git_kata
-  # the volumes don't need git katas, only newer json katas
-  # volume can be readonly
-  # TODO:
+  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test 'BEC',
   'zip with empty id raises' do
@@ -37,51 +32,64 @@ class ZipperTest < ZipperTestBase
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-=begin
   test '561',
-  'download of empty dojo with no avatars',
-  'untars to same as original folder' do
-    prepare
-    get 'downloader/download_json', 'id' => @id
-    assert_downloaded
-  end
-
-  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '1B1',
-  'download of dojo with one avatar and one traffic-light',
-  'untars to same as original folder' do
-    prepare
-    start
-    kata_edit
-    change_file('hiker.rb', 'def...')
-    run_tests
-    get 'downloader/download', 'id' => @id
-    assert_downloaded
-  end
-
-  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test 'E9B',
-  'download of dojo with five animals and five traffic-lights',
-  'untars to same as original folder' do
-    prepare
-    5.times do
-      start
-      kata_edit
-      change_file('hiker.rb', 'def...')
-      run_tests
-      change_file('test_hiker.rb', 'def...')
-      run_tests
+  'zip into json format ready for saving directly into storer' do
+    ids.each do |id|
+      tgz_filename = zip_json(id)
+      assert_json_zipped(id, tgz_filename)
     end
-    get 'downloader/download', 'id' => @id
-    assert_downloaded
   end
-
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  def assert_downloaded
-    assert_response :success
+
+  test 'A66',
+  'zip into git format useful for creating new start-points' do
+    ids.each do |id|
+      tgz_filename = zip_git(id)
+      assert_git_zipped(id, tgz_filename)
+    end
+  end
+
+  private
+
+  def assert_json_zipped(id, tgz_filename)
+    assert File.exists?(tgz_filename), "File.exists?(#{tgz_filename})"
+    #untar it into execute-around tmp dir
+    #then compare untarred content with masters retrieved from from storer
+
+    #manifest = storer.kata_manifest(id)
+    #compare with untarred manifest.json
+
+    #avatars = storer.started_avatars(id)
+    #compare with untarred avatar-dirs
+
+    #rags = storer.avatar_increments(id, 'lion')
+    #compare with untarred versions
+
+    #compare visible-files with those from storer
+    #files = storer.tag_visible_files(id, 'lion', 1)
+  end
+
+  def assert_git_zipped(id, tgz_filename)
+    assert File.exists?(tgz_filename), "File.exists?(#{tgz_filename})"
+    #...
+  end
+
+  include IdSplitter
+
+  def ids
+    [
+      'DADD67B4EF', # empty kata
+      'F6986222F0', # one avatar and no traffic-lights
+      '1D1B0BE42D', # one avatar and one traffic-lights
+      '697C14EDF4', # one avatar and three traffic-lights
+      '7AF23949B7', # three avatar each with three traffic-lights
+    ]
+  end
+
+end
+
+=begin
     # unzip new tarfile
     tarfile_name = @tar_dir + '/' + "#{@id}.tgz"
     assert File.exists?(tarfile_name), "File.exists?(#{tarfile_name})"
@@ -119,8 +127,3 @@ class ZipperTest < ZipperTestBase
   end
 =end
 
-  private
-
-  include IdSplitter
-
-end

@@ -3,10 +3,11 @@ version: '2'
 
 services:
 
-  # TODO: this needs a volume-mount with known-state katas, like storer
+  # TODO: Add zipper_client
+  # TODO: add shared /tmp/cyber-dojo/zipper to zipper-client and zipper-server
 
-  # TODO:Add downloader_client which can see shared /tmp folder...
   zipper:
+  # TODO:Add downloader_client which can see shared /tmp folder...
     user: nobody
     image: cyberdojo/zipper
     container_name: zipper_server
@@ -15,14 +16,12 @@ services:
       args:
         PORT: 4587
 
-  # TODO: this needs a volume-mount with known-state katas, like storer
   storer:
     user: root
     image: cyberdojo/storer
-    container_name: cyber-dojo-storer
+    container_name: storer_server
+    environment: [ CYBER_DOJO_KATAS_ROOT=/tmp/katas ]
     read_only: true
     tmpfs: /tmp
-    environment: [ CYBER_DOJO_KATAS_ROOT=/tmp/cyber-dojo/katas ]
-    mem_limit: 2G
-    memswap_limit: 2G
-    restart: on-failure
+    volumes_from:
+      - container:cyber-dojo-zipper-kata-DATA-CONTAINER:rw

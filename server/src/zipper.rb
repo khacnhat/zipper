@@ -11,8 +11,8 @@ class Zipper
 
   def zip_json(kata_id)
     # Create files off /tmp in new non-git format
-    download_path = '/tmp/cyber-dojo/downloads'
-    kata_path = "#{download_path}/#{outer(kata_id)}/#{inner(kata_id)}"
+    zip_path = '/tmp/cyber-dojo/zips'
+    kata_path = "#{zip_path}/#{outer(kata_id)}/#{inner(kata_id)}"
     kata_dir = disk[kata_path]
     kata_dir.make
     kata_dir.write_json('manifest.json', storer.kata_manifest(kata_id))
@@ -32,19 +32,19 @@ class Zipper
       end
     end
     # and tar that
-    cd_cmd = "cd #{download_path}"
-    tar_filename = "#{download_path}/#{kata_id}.tgz"
-    tar_cmd = "tar -zcf #{tar_filename} #{outer(kata_id)}/#{inner(kata_id)}"
+    cd_cmd = "cd #{zip_path}"
+    tgz_filename = "#{zip_path}/#{kata_id}.tgz"
+    tar_cmd = "tar -zcf #{tgz_filename} #{outer(kata_id)}/#{inner(kata_id)}"
     shell.exec(cd_cmd, tar_cmd)
-    tar_filename
+    tgz_filename
   end
 
   # - - - - - - - - - - - - - - - - - - - - -
 
   def zip_git(kata_id)
     # Create files off /tmp in git format
-    download_path = '/tmp/cyber-dojo/downloads'
-    kata_path = "#{download_path}/#{outer(kata_id)}/#{inner(kata_id)}"
+    zip_path = '/tmp/cyber-dojo/zips'
+    kata_path = "#{zip_path}/#{outer(kata_id)}/#{inner(kata_id)}"
     kata_dir = disk[kata_path]
     kata_dir.make
     kata_dir.write_json('manifest.json', storer.kata_manifest(kata_id))
@@ -52,11 +52,11 @@ class Zipper
     # create git repo
     # TODO...
 
-    cd_cmd = "cd #{download_path}"
-    tar_filename = "#{download_path}/#{kata_id}.tgz"
-    tar_cmd = "tar -zcf #{tar_filename} #{outer(kata_id)}/#{inner(kata_id)}"
+    cd_cmd = "cd #{zip_path}"
+    tgz_filename = "#{zip_path}/#{kata_id}.tgz"
+    tar_cmd = "tar -zcf #{tgz_filename} #{outer(kata_id)}/#{inner(kata_id)}"
     shell.exec(cd_cmd, tar_cmd)
-    tar_filename
+    tgz_filename
   end
 
   private
