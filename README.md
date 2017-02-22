@@ -20,7 +20,7 @@ alt="cyber-dojo yin/yang logo" width="50px" height="50px"/>
 
 - - - -
 
-# zip_json
+# zip
 Creates a tgz file of the kata with the given kata_id, in json format
 (the format [storer](https://github.com/cyber-dojo/storer) uses).
 The caller must share the tgz directory (/tmp/cyber-dojo/zips/) with zipper.
@@ -33,17 +33,3 @@ The caller must share the tgz directory (/tmp/cyber-dojo/zips/) with zipper.
   { "zip_json": "/tmp/cyber-dojo/zips/A551C528C3.tgz" }
 ```
 
-- - - -
-
-# zip_git
-Creates a tgz file of the kata with the given kata_id, in git format.
-The caller must share the tgz directory (/tmp/cyber-dojo/zips/) with zipper.
-Use this format to get individual source files to create a start-point from.
-- parameter, eg
-```
-  {  "kata_id": "A551C528C3" }
-```
-- returns the filename of the created tgz file, eg
-```
-  { "zip_git": "/tmp/cyber-dojo/zips/A551C528C3.tgz" }
-```
