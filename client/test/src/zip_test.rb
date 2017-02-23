@@ -26,11 +26,16 @@ class ZipTest < TestBase
 
   test '6F8',
   'unzipped tgz dir compares identical to original storer dir' do
-    #o) call zip on zipper-server
-    #o) untar
-    #o) compare the untarred dir in tmp_zipper to the master
-    #   in kata-container volume.
+    tgz_filename = zip(kata_id = '7AF23949B7')
+    Dir.mktmpdir('zipper') do |tmp_dir|
+      `cd #{tmp_dir} && cat #{tgz_filename} | tar xfz -`
+      katas_dir = ENV['CYBER_DOJO_KATAS_ROOT']
 
+      #`diff -r #{tmp_dir}/7A #{katas_dir}/7A 2>&1`
+
+      #puts `ls -al #{tmp_dir}/7A/F23949B7`
+      #puts `ls -al #{katas_dir}/7A/F23949B7`
+    end
   end
 
   private

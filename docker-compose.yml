@@ -11,9 +11,10 @@ services:
     image: cyberdojo/zipper_client
     container_name: zipper_client
     environment:
-      - CYBER_DOJO_ZIPPER_ROOT=/tmp_zipper
       - CYBER_DOJO_COVERAGE_ROOT
+      - CYBER_DOJO_KATAS_ROOT=/tmp/katas
     volumes: [ "tmp_zipper:/tmp_zipper:ro" ]
+    volumes_from: [ "container:cyber-dojo-zipper-kata-DATA-CONTAINER:ro" ]
     build:
       context: client
       args: [ PORT=4588 ]
@@ -24,8 +25,8 @@ services:
     image: cyberdojo/zipper
     container_name: zipper_server
     environment:
-      - CYBER_DOJO_ZIPPER_ROOT=/tmp_zipper
       - CYBER_DOJO_COVERAGE_ROOT
+      - CYBER_DOJO_ZIPPER_ROOT=/tmp_zipper
     volumes: [ "tmp_zipper:/tmp_zipper:rw" ]
     build:
       context: server
