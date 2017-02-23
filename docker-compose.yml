@@ -10,9 +10,9 @@ services:
     user: nobody
     image: cyberdojo/zipper_client
     container_name: zipper_client
-    read_only: true
-    tmpfs: /tmp
-    environment: [ CYBER_DOJO_ZIPPER_ROOT=/tmp_zipper ]
+    environment:
+      - CYBER_DOJO_ZIPPER_ROOT=/tmp_zipper
+      - CYBER_DOJO_COVERAGE_ROOT
     volumes: [ "tmp_zipper:/tmp_zipper:ro" ]
     build:
       context: client

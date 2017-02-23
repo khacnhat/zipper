@@ -24,7 +24,7 @@ run_server_tests()
 run_client_tests()
 {
   docker exec ${client_cid} sh -c "cd test && ./run.sh ${*}"
-  server_status=$?
+  client_status=$?
   docker cp ${client_cid}:${cov_dir} ${my_dir}/client
   echo "Coverage report copied to ${my_dir}/client/coverage"
   cat ${my_dir}/client/coverage/done.txt
@@ -33,7 +33,7 @@ run_client_tests()
 # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 run_server_tests ${*}
-#run_server_tests ${*}
+run_client_tests ${*}
 
 if [[ ( ${server_status} == 0 && ${client_status} == 0 ) ]];  then
   echo "------------------------------------------------------"
