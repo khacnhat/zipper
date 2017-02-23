@@ -1,7 +1,7 @@
 require 'json'
 require 'net/http'
 
-module ZipperService # mix-in
+class ZipperService
 
   def zip(kata_id)
     post(__method__, kata_id)

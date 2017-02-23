@@ -8,7 +8,7 @@ services:
 
   zipper_client:
     user: nobody
-    image: cyberdojo/zipper
+    image: cyberdojo/zipper_client
     container_name: zipper_client
     read_only: true
     tmpfs: /tmp
