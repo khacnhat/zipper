@@ -17,7 +17,8 @@ run_server_tests()
 {
   docker exec ${server_cid} sh -c "cd test && ./run.sh ${*}"
   server_status=$?
-  docker cp ${server_cid}:${CYBER_DOJO_COVERAGE_ROOT} ${my_dir}/server
+  rm -rf ${my_dir}/server/coverage/
+  docker cp ${server_cid}:${CYBER_DOJO_COVERAGE_ROOT}/. ${my_dir}/server/coverage/
   echo "Coverage report copied to ${my_dir}/server/coverage"
   cat ${my_dir}/server/coverage/done.txt
 }
@@ -26,7 +27,8 @@ run_client_tests()
 {
   docker exec ${client_cid} sh -c "cd test && ./run.sh ${*}"
   client_status=$?
-  docker cp ${client_cid}:${CYBER_DOJO_COVERAGE_ROOT} ${my_dir}/client
+  rm -rf ${my_dir}/client/coverage
+  docker cp ${client_cid}:${CYBER_DOJO_COVERAGE_ROOT}/. ${my_dir}/client/coverage/
   echo "Coverage report copied to ${my_dir}/client/coverage"
   cat ${my_dir}/client/coverage/done.txt
 }

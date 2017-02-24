@@ -11,7 +11,6 @@ if [ ! -f /.dockerenv ]; then
 fi
 
 cov_dir=${CYBER_DOJO_COVERAGE_ROOT}
-mkdir ${cov_dir}
 test_log=${cov_dir}/test.log
 
 my_dir="$( cd "$( dirname "${0}" )" && pwd )"

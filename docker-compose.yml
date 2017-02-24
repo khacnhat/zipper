@@ -7,12 +7,16 @@ services:
     user: nobody
     image: cyberdojo/zipper_client
     container_name: zipper_client
+    read_only: true
+    tmpfs: /tmp
     depends_on:
       - zipper
-      - zipper-tmp-container
+      - zipper-shared-tmp-container
+      - zipper-client-coverage-container
     volumes_from:
       - storer-data-container:ro
-      - zipper-tmp-container:ro
+      - zipper-shared-tmp-container:ro
+      - zipper-client-coverage-container:rw
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
       - CYBER_DOJO_KATAS_ROOT
@@ -28,11 +32,15 @@ services:
     user: zipper
     image: cyberdojo/zipper
     container_name: zipper_server
+    read_only: true
+    tmpfs: /tmp
     depends_on:
       - storer
-      - zipper-tmp-container
+      - zipper-shared-tmp-container
+      - zipper-server-coverage-container
     volumes_from:
-      - zipper-tmp-container:rw
+      - zipper-shared-tmp-container:rw
+      - zipper-server-coverage-container:rw
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
       - CYBER_DOJO_ZIPPER_ROOT
@@ -40,14 +48,6 @@ services:
       context: server
       args:
         - PORT=${CYBER_DOJO_ZIPPER_SERVER_PORT}
-
-
-  zipper-tmp-container:
-    image: cyberdojo/zipper
-    container_name: zipper-tmp-container
-    volumes:
-      - /${CYBER_DOJO_ZIPPER_ROOT}
-    command: "chown zipper:zipper ${CYBER_DOJO_ZIPPER_ROOT}"
 
 
   storer:
@@ -62,6 +62,31 @@ services:
     tmpfs: /tmp
     environment:
       - CYBER_DOJO_KATAS_ROOT
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  zipper-client-coverage-container:
+    image: cyberdojo/zipper
+    container_name: zipper-client-coverage-container
+    volumes:
+      - /${CYBER_DOJO_COVERAGE_ROOT}
+    command: "chown nobody:nobody ${CYBER_DOJO_COVERAGE_ROOT}"
+
+
+  zipper-server-coverage-container:
+    image: cyberdojo/zipper
+    container_name: zipper-server-coverage-container
+    volumes:
+      - /${CYBER_DOJO_COVERAGE_ROOT}
+    command: "chown zipper:zipper ${CYBER_DOJO_COVERAGE_ROOT}"
+
+
+  zipper-shared-tmp-container:
+    image: cyberdojo/zipper
+    container_name: zipper-shared-tmp-container
+    volumes:
+      - /${CYBER_DOJO_ZIPPER_ROOT}
+    command: "chown zipper:zipper ${CYBER_DOJO_ZIPPER_ROOT}"
 
 
   storer-data-container:
