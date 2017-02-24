@@ -8,7 +8,10 @@ CONTEXT_DIR=${MY_DIR}
 TAG=cyberdojo/zipper_kata
 CYBER_DOJO_ZIPPER_KATA_DATA_CONTAINER=cyber-dojo-zipper-kata-DATA-CONTAINER
 
-(docker rm --force --volumes ${CYBER_DOJO_ZIPPER_KATA_DATA_CONTAINER}) || true
+name="${CYBER_DOJO_ZIPPER_KATA_DATA_CONTAINER}"
+if [ "$(docker ps --all --quiet --filter name=${name})" != "" ]; then
+  docker rm --force --volumes ${name}
+fi
 
 cd ${MY_DIR}
 
