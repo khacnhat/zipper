@@ -25,7 +25,7 @@ services:
       - ${CYBER_DOJO_ZIPPER_CLIENT_PORT}:${CYBER_DOJO_ZIPPER_CLIENT_PORT}
 
   zipper:
-    user: nobody
+    user: root
     image: cyberdojo/zipper
     container_name: zipper_server
     environment:
