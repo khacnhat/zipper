@@ -29,15 +29,16 @@ module HttpService # mix-in
   end
 
   def result(json, name)
-    raise error(name, 'bad json') unless json.class.name == 'Hash'
+    fail_if(name, 'bad json') { json.class.name == 'Hash' }
     exception = json['exception']
-    raise error(name, exception)  unless exception.nil?
-    raise error(name, 'no key')   unless json.key? name
+    fail_if(name, exception) { exception.nil? }
+    fail_if(name, 'no key') { json.key? name }
     json[name]
   end
 
-  def error(name, message)
-    StandardError.new("#{self.class.name}:#{name}:#{message}")
+  def fail_if(name, message, &block)
+    to_raise = StandardError.new("#{self.class.name}:#{name}:#{message}")
+    fail to_raise unless block.call
   end
 
 end

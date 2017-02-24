@@ -15,7 +15,7 @@ class ZipperTest < ZipperTestBase
   test 'BEC',
   'zip with empty id raises' do
     error = assert_raises(StandardError) { zip(id = '') }
-    assert_equal 'StorerService:kata_manifest:Storer:invalid kata_id', error.message
+    assert_equal 'Zipper:invalid kata_id', error.message
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -23,7 +23,7 @@ class ZipperTest < ZipperTestBase
   test '849',
   'zip with bad id raises' do
     error = assert_raises(StandardError) { zip(id = 'XX') }
-    assert_equal 'StorerService:kata_manifest:Storer:invalid kata_id', error.message
+    assert_equal 'Zipper:invalid kata_id', error.message
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

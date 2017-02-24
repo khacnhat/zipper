@@ -10,8 +10,10 @@ class Zipper
   attr_reader :parent
 
   def zip(kata_id)
+    assert_valid_id(kata_id)
     # Creates tgz file in storer's json format
     kata_path = "#{zip_path}/#{outer(kata_id)}/#{inner(kata_id)}"
+    shell.exec("rm -rf #{kata_path}")
     kata_dir = disk[kata_path]
     kata_dir.make
     kata_dir.write_json('manifest.json', storer.kata_manifest(kata_id))
@@ -43,11 +45,35 @@ class Zipper
 
   private
 
+  include IdSplitter
+
   def zip_path
     ENV['CYBER_DOJO_ZIPPER_ROOT']
   end
 
-  include IdSplitter
+  # - - - - - - - - - - - - - - - - - - - -
+
+  def assert_valid_id(kata_id)
+    unless valid_id?(kata_id)
+      fail error('kata_id')
+    end
+  end
+
+  def valid_id?(kata_id)
+    kata_id.class.name == 'String' &&
+      kata_id.chars.all? { |char| hex?(char) } &&
+        kata_id.length == 10
+  end
+
+  def hex?(char)
+    '0123456789ABCDEF'.include?(char)
+  end
+
+  def error(message)
+    ArgumentError.new("Zipper:invalid #{message}")
+  end
+
+  # - - - - - - - - - - - - - - - - - - - -
 
   include NearestAncestors
   def storer; nearest_ancestors(:storer); end
