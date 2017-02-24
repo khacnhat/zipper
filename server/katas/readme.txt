@@ -2,7 +2,7 @@
 I want zipper to be decoupled from web for its testing so
 I'm unable to create new katas in the storer.
 So I
-  o) extract known katas from a live storer (extract_katas.sh).
+  o) extract known katas from a live storer (extract_katas.sh)
   o) create a new data-container (create_data_container.sh)
   o) save them into a volume (using fill_data_container.sh) which I then
      mount as storer's volume.
