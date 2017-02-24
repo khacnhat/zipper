@@ -10,6 +10,8 @@ services:
     user: nobody
     image: cyberdojo/zipper_client
     container_name: zipper_client
+    depends_on:
+      - zipper
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
       - CYBER_DOJO_KATAS_ROOT
@@ -28,6 +30,8 @@ services:
     user: root
     image: cyberdojo/zipper
     container_name: zipper_server
+    depends_on:
+      - storer
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
       - CYBER_DOJO_ZIPPER_ROOT
