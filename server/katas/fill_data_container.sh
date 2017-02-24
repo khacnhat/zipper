@@ -1,14 +1,11 @@
 #!/bin/bash
 set -e
 
-
 # called from pipe_build_up_test.sh
 
 MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
 . ${MY_DIR}/../../.env
-
-cd ${MY_DIR}
 
 for ID in DA F6 1D 69 7A
 do
