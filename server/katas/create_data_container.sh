@@ -12,15 +12,13 @@ if [ "$(docker ps --all --quiet --filter name=${name})" != "" ]; then
   docker rm --force --volumes ${name}
 fi
 
-cd ${MY_DIR}
-CONTEXT_DIR=${MY_DIR}
 TAG=cyberdojo/zipper_kata
 
 docker build \
   --build-arg=CYBER_DOJO_KATAS_ROOT=${CYBER_DOJO_KATAS_ROOT} \
   --tag=${TAG} \
-  --file=Dockerfile \
-  ${CONTEXT_DIR}
+  --file=${MY_DIR}/Dockerfile \
+  ${MY_DIR}
 
 docker create \
   --name ${CYBER_DOJO_ZIPPER_KATA_DATA_CONTAINER} \
