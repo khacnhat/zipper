@@ -9,15 +9,13 @@ services:
     container_name: zipper_client
     depends_on:
       - zipper
+      - zipper-tmp-container
+    volumes_from:
+      - storer-data-container:ro
+      - zipper-tmp-container:ro
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
       - CYBER_DOJO_KATAS_ROOT
-    depends_on:
-      - zipper-tmp-container
-      - zipper
-    volumes_from:
-      - container:cyber-dojo-zipper-kata-DATA-CONTAINER:ro
-      - zipper-tmp-container:ro
     build:
       context: client
       args:
@@ -33,11 +31,11 @@ services:
     depends_on:
       - storer
       - zipper-tmp-container
+    volumes_from:
+      - zipper-tmp-container:rw
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
       - CYBER_DOJO_ZIPPER_ROOT
-    volumes_from:
-      - zipper-tmp-container:rw
     build:
       context: server
       args:
@@ -56,9 +54,18 @@ services:
     user: nobody
     image: cyberdojo/storer
     container_name: storer_server
+    depends_on:
+      - storer-data-container
     read_only: true
     tmpfs: /tmp
     environment:
       - CYBER_DOJO_KATAS_ROOT
     volumes_from:
-      - container:cyber-dojo-zipper-kata-DATA-CONTAINER:ro
+      - storer-data-container:ro
+
+
+  storer-data-container:
+    image: cyberdojo/storer
+    container_name: storer-data-container
+    volumes:
+      - ./server/katas:${CYBER_DOJO_KATAS_ROOT}

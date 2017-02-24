@@ -1,7 +1,0 @@
-FROM alpine:3.4
-MAINTAINER Jon Jagger <jon@jaggersoft.com>
-
-ARG CYBER_DOJO_KATAS_ROOT
-USER root
-RUN  mkdir -p ${CYBER_DOJO_KATAS_ROOT}
-VOLUME [ "${CYBER_DOJO_KATAS_ROOT}" ]
