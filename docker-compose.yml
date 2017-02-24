@@ -46,8 +46,8 @@ services:
     image: cyberdojo/zipper
     container_name: zipper-tmp-container
     volumes:
-      - /tmp_zipper
-    command: "chown zipper:zipper /tmp_zipper"
+      - /${CYBER_DOJO_ZIPPER_ROOT}
+    command: "chown zipper:zipper ${CYBER_DOJO_ZIPPER_ROOT}"
 
 
   storer:
@@ -56,16 +56,16 @@ services:
     container_name: storer_server
     depends_on:
       - storer-data-container
+    volumes_from:
+      - storer-data-container:ro
     read_only: true
     tmpfs: /tmp
     environment:
       - CYBER_DOJO_KATAS_ROOT
-    volumes_from:
-      - storer-data-container:ro
 
 
   storer-data-container:
     image: cyberdojo/storer
     container_name: storer-data-container
     volumes:
-      - ./server/katas:${CYBER_DOJO_KATAS_ROOT}
+      - ./server/katas:${CYBER_DOJO_KATAS_ROOT}:ro
