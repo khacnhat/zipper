@@ -1,9 +1,6 @@
 
 version: '2'
 
-volumes:
-  tmp_zipper:
-
 services:
 
   zipper_client:
@@ -15,10 +12,12 @@ services:
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
       - CYBER_DOJO_KATAS_ROOT
-    volumes:
-      - tmp_zipper:/tmp_zipper:ro
+    depends_on:
+      - zipper-tmp-container
+      - zipper
     volumes_from:
       - container:cyber-dojo-zipper-kata-DATA-CONTAINER:ro
+      - zipper-tmp-container:ro
     build:
       context: client
       args:
@@ -26,29 +25,40 @@ services:
     ports:
       - ${CYBER_DOJO_ZIPPER_CLIENT_PORT}:${CYBER_DOJO_ZIPPER_CLIENT_PORT}
 
+
   zipper:
-    user: root
+    user: zipper
     image: cyberdojo/zipper
     container_name: zipper_server
     depends_on:
       - storer
+      - zipper-tmp-container
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
       - CYBER_DOJO_ZIPPER_ROOT
-    volumes:
-      - tmp_zipper:/tmp_zipper:rw
+    volumes_from:
+      - zipper-tmp-container:rw
     build:
       context: server
       args:
         - PORT=${CYBER_DOJO_ZIPPER_SERVER_PORT}
 
+
+  zipper-tmp-container:
+    image: cyberdojo/zipper
+    container_name: zipper-tmp-container
+    volumes:
+      - /tmp_zipper
+    command: "chown zipper:zipper /tmp_zipper"
+
+
   storer:
-    user: root
+    user: nobody
     image: cyberdojo/storer
     container_name: storer_server
-    environment:
-      - CYBER_DOJO_KATAS_ROOT
     read_only: true
     tmpfs: /tmp
+    environment:
+      - CYBER_DOJO_KATAS_ROOT
     volumes_from:
-      - container:cyber-dojo-zipper-kata-DATA-CONTAINER:rw
+      - container:cyber-dojo-zipper-kata-DATA-CONTAINER:ro
