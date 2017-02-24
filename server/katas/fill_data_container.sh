@@ -16,14 +16,3 @@ do
     ${MY_DIR}/${ID} \
     ${CYBER_DOJO_ZIPPER_KATA_DATA_CONTAINER}:${CYBER_DOJO_KATAS_ROOT}/${ID}
 done
-
-# can't exec directly into zipper-kata-data-container as it is not running
-# so use cyberdojo/ruby image
-
-docker run \
-  --rm \
-  --tty \
-  --volumes-from ${CYBER_DOJO_ZIPPER_KATA_DATA_CONTAINER} \
-  cyberdojo/ruby:latest \
-  sh -c "chown -R cyber-dojo:cyber-dojo /tmp/katas"
-
