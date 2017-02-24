@@ -1,8 +1,9 @@
 #!/bin/bash
 
+. .env
+
 my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 my_name="${my_dir##*/}"
-cov_dir=${CYBER_DOJO_COVERAGE_ROOT}
 
 server_cid=`docker ps --all --quiet --filter "name=${my_name}_server"`
 server_status=0
@@ -16,7 +17,7 @@ run_server_tests()
 {
   docker exec ${server_cid} sh -c "cd test && ./run.sh ${*}"
   server_status=$?
-  docker cp ${server_cid}:${cov_dir} ${my_dir}/server
+  docker cp ${server_cid}:${CYBER_DOJO_COVERAGE_ROOT} ${my_dir}/server
   echo "Coverage report copied to ${my_dir}/server/coverage"
   cat ${my_dir}/server/coverage/done.txt
 }
@@ -25,7 +26,7 @@ run_client_tests()
 {
   docker exec ${client_cid} sh -c "cd test && ./run.sh ${*}"
   client_status=$?
-  docker cp ${client_cid}:${cov_dir} ${my_dir}/client
+  docker cp ${client_cid}:${CYBER_DOJO_COVERAGE_ROOT} ${my_dir}/client
   echo "Coverage report copied to ${my_dir}/client/coverage"
   cat ${my_dir}/client/coverage/done.txt
 }

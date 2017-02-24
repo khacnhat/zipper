@@ -12,13 +12,17 @@ services:
     container_name: zipper_client
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
-      - CYBER_DOJO_KATAS_ROOT=/tmp/katas
-    volumes: [ "tmp_zipper:/tmp_zipper:ro" ]
-    volumes_from: [ "container:cyber-dojo-zipper-kata-DATA-CONTAINER:ro" ]
+      - CYBER_DOJO_KATAS_ROOT
+    volumes:
+      - tmp_zipper:/tmp_zipper:ro
+    volumes_from:
+      - container:cyber-dojo-zipper-kata-DATA-CONTAINER:ro
     build:
       context: client
-      args: [ PORT=4588 ]
-    ports: [ "4588:4588" ]
+      args:
+        - PORT=${CYBER_DOJO_ZIPPER_CLIENT_PORT}
+    ports:
+      - ${CYBER_DOJO_ZIPPER_CLIENT_PORT}:${CYBER_DOJO_ZIPPER_CLIENT_PORT}
 
   zipper:
     user: nobody
@@ -26,17 +30,21 @@ services:
     container_name: zipper_server
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
-      - CYBER_DOJO_ZIPPER_ROOT=/tmp_zipper
-    volumes: [ "tmp_zipper:/tmp_zipper:rw" ]
+      - CYBER_DOJO_ZIPPER_ROOT
+    volumes:
+      - tmp_zipper:/tmp_zipper:rw
     build:
       context: server
-      args: [ PORT=4587 ]
+      args:
+        - PORT=${CYBER_DOJO_ZIPPER_SERVER_PORT}
 
   storer:
     user: root
     image: cyberdojo/storer
     container_name: storer_server
-    environment: [ CYBER_DOJO_KATAS_ROOT=/tmp/katas ]
+    environment:
+      - CYBER_DOJO_KATAS_ROOT
     read_only: true
     tmpfs: /tmp
-    volumes_from: [ "container:cyber-dojo-zipper-kata-DATA-CONTAINER:rw" ]
+    volumes_from:
+      - container:cyber-dojo-zipper-kata-DATA-CONTAINER:rw
