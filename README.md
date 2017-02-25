@@ -7,10 +7,8 @@ alt="cyber-dojo yin/yang logo" width="50px" height="50px"/>
 
 # cyberdojo/zipper docker image
 
-- Work in progress. Not used yet.
-
 - A micro-service for [cyber-dojo](http://cyber-dojo.org).
-- Creates tgz files of a kata in two formats.
+- Creates tgz files of a kata.
 
 - API:
   * All methods receive their arguments in a json object.
