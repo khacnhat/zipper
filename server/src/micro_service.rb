@@ -8,6 +8,10 @@ class MicroService < Sinatra::Base
     poster(__method__, kata_id)
   end
 
+  post '/zip_tag' do
+    poster(__method__, kata_id, avatar_name, tag)
+  end
+
   private
 
   include Externals
@@ -32,7 +36,7 @@ class MicroService < Sinatra::Base
     }
   end
 
-  request_args :kata_id
+  request_args :kata_id, :avatar_name, :tag
 
   def args
     @args ||= JSON.parse(request_body_args)

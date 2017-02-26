@@ -43,6 +43,10 @@ class Zipper
     tgz_filename
   end
 
+  def zip_tag(kata_id, avatar_name, tag)
+    assert_valid_id(kata_id)
+  end
+
   private
 
   include IdSplitter

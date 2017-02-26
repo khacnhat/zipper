@@ -2,7 +2,7 @@ require_relative 'zipper_test_base'
 require_relative 'null_logger'
 require_relative '../../src/id_splitter'
 
-class ZipperTest < ZipperTestBase
+class ZipTest < ZipperTestBase
 
   def self.hex_prefix; '03D'; end
 

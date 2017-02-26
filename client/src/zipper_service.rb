@@ -7,6 +7,10 @@ class ZipperService
     post(__method__, kata_id)
   end
 
+  def zip_tag(kata_id, avatar_name, tag)
+    post(__method__, kata_id, avatar_name, tag)
+  end
+
   private
 
   def post(method, *args)
