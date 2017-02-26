@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. .env
-
 my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 my_name="${my_dir##*/}"
 
@@ -12,6 +10,8 @@ client_cid=`docker ps --all --quiet --filter "name=${my_name}_client"`
 client_status=0
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+. ${my_dir}/.env
 
 run_server_tests()
 {
