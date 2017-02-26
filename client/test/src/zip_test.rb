@@ -32,4 +32,10 @@ class ZipTest < TestBase
     end
   end
 
+  # - - - - - - - - - - - - - - - - - - - - - - - -
+
+  def zip(kata_id)
+    zipper.zip(kata_id)
+  end
+
 end

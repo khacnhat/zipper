@@ -11,4 +11,10 @@ class ZipTagTest < TestBase
     assert_equal 'ZipperService:zip_tag:Zipper:invalid kata_id', error.message
   end
 
+  # - - - - - - - - - - - - - - - - - - - - - - - -
+
+  def zip_tag(kata_id, avatar_name, tag)
+    zipper.zip_tag(kata_id, avatar_name, tag)
+  end
+
 end
