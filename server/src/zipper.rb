@@ -44,8 +44,8 @@ class Zipper
   end
 
   def zip_tag(kata_id, avatar_name, tag)
-    #assert_valid_id(kata_id)
     manifest = storer.tag_visible_files(kata_id, avatar_name, tag)
+    # TODO
   end
 
   private
