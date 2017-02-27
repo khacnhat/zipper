@@ -24,7 +24,7 @@ class MicroService < Sinatra::Base
     name = caller.to_s[prefix.length .. -1]
     { name => zipper.send(name, *args) }.to_json
   rescue Exception => e
-    log << "EXCEPTION: #{e.class.name}.caller #{e.message}"
+    log << "EXCEPTION: #{e.class.name}.#{caller} #{e.message}"
     { 'exception' => e.message }.to_json
   end
 
