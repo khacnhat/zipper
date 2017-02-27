@@ -13,4 +13,14 @@ class ZipperTestBase < HexMiniTest
     zipper.zip_tag(kata_id, avatar_name, tag)
   end
 
+  def ids
+    [
+      'DADD67B4EF', # empty kata
+      'F6986222F0', # (spider) no traffic-lights
+      '1D1B0BE42D', # (hippo) one traffic-lights
+      '697C14EDF4', # (turtle) three traffic-lights
+      '7AF23949B7', # (alligator,heron,squid) each with three traffic-lights
+    ]
+  end
+
 end

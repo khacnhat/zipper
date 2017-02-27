@@ -10,14 +10,13 @@ class Zipper
   attr_reader :parent
 
   def zip(kata_id)
-    assert_valid_id(kata_id)
+    manifest = storer.kata_manifest(kata_id)
     # Creates tgz file in storer's json format
     kata_path = "#{zip_path}/#{outer(kata_id)}/#{inner(kata_id)}"
     shell.exec("rm -rf #{kata_path}")
     kata_dir = disk[kata_path]
     kata_dir.make
-    kata_dir.write_json('manifest.json', storer.kata_manifest(kata_id))
-    storer.started_avatars(kata_id).each do |avatar_name|
+    kata_dir.write_json('manifest.json', manifest)     storer.started_avatars(kata_id).each do |avatar_name|
       avatar_path = "#{kata_path}/#{avatar_name}"
       avatar_dir = disk[avatar_path]
       avatar_dir.make
@@ -44,7 +43,8 @@ class Zipper
   end
 
   def zip_tag(kata_id, avatar_name, tag)
-    assert_valid_id(kata_id)
+    #assert_valid_id(kata_id)
+    manifest = storer.tag_visible_files(kata_id, avatar_name, tag)
   end
 
   private
@@ -54,30 +54,6 @@ class Zipper
   def zip_path
     ENV['CYBER_DOJO_ZIPPER_ROOT']
   end
-
-  # - - - - - - - - - - - - - - - - - - - -
-
-  def assert_valid_id(kata_id)
-    unless valid_id?(kata_id)
-      fail error('kata_id')
-    end
-  end
-
-  def valid_id?(kata_id)
-    kata_id.class.name == 'String' &&
-      kata_id.chars.all? { |char| hex?(char) } &&
-        kata_id.length == 10
-  end
-
-  def hex?(char)
-    '0123456789ABCDEF'.include?(char)
-  end
-
-  def error(message)
-    ArgumentError.new("Zipper:invalid #{message}")
-  end
-
-  # - - - - - - - - - - - - - - - - - - - -
 
   include NearestAncestors
   def storer; nearest_ancestors(:storer); end

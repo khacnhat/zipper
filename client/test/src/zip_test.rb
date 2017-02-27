@@ -7,7 +7,7 @@ class ZipTest < TestBase
   test '8BE',
   'zip empty kata_id raises' do
     error = assert_raises(StandardError) { zip(kata_id = ' ') }
-    assert_equal 'ZipperService:zip:Zipper:invalid kata_id', error.message
+    assert error.message.end_with? 'invalid kata_id'
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - -
@@ -15,7 +15,7 @@ class ZipTest < TestBase
   test '8BF',
   'zip bad kata_id raises' do
     error = assert_raises(StandardError) { zip(kata_id = 'XX') }
-    assert_equal 'ZipperService:zip:Zipper:invalid kata_id', error.message
+    assert error.message.end_with? 'invalid kata_id'
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - -

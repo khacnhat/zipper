@@ -15,7 +15,7 @@ class ZipTest < ZipperTestBase
   test 'BEC',
   'zip with empty id raises' do
     error = assert_raises(StandardError) { zip(id = '') }
-    assert_equal 'Zipper:invalid kata_id', error.message
+    assert error.message.end_with? 'invalid kata_id'
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -23,7 +23,7 @@ class ZipTest < ZipperTestBase
   test '849',
   'zip with bad id raises' do
     error = assert_raises(StandardError) { zip(id = 'XX') }
-    assert_equal 'Zipper:invalid kata_id', error.message
+    assert error.message.end_with? 'invalid kata_id'
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -70,15 +70,5 @@ class ZipTest < ZipperTestBase
   end
 
   include IdSplitter
-
-  def ids
-    [
-      'DADD67B4EF', # empty kata
-      'F6986222F0', # one avatar and no traffic-lights
-      '1D1B0BE42D', # one avatar and one traffic-lights
-      '697C14EDF4', # one avatar and three traffic-lights
-      '7AF23949B7', # three avatar each with three traffic-lights
-    ]
-  end
 
 end
