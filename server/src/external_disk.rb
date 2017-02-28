@@ -57,7 +57,11 @@ class ExternalDir
   end
 
   def read_json(filename)
-    JSON.parse(IO.read(path + filename))
+    JSON.parse(read(filename))
+  end
+
+  def read(filename)
+    IO.read(path + filename)
   end
 
   private

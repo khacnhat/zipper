@@ -14,17 +14,35 @@ class ZipTagTest < ZipperTestBase
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '2A8',
-  'zip_tag on started avatar with no tests tag-0 successful' do
-    tgz_filename = zip_tag('F6986222F0', 'spider', 0)
-    assert File.exists? tgz_filename
-    Dir.mktmpdir('zipper') do |tmp_dir|
-      _,status = shell.cd_exec(tmp_dir, "cat #{tgz_filename} | tar xfz -")
-      assert_equal 0, status
-      # TODO: check file contents
+  'zip_tag unzipped content match masters in storer',
+  'on started avatar with no tests tag-0 successful' do
+    args = [
+      ['F6986222F0', 'spider', 0],
+      ['1D1B0BE42D', 'hippo',  0],
+      ['1D1B0BE42D', 'hippo',  1],
+      ['697C14EDF4', 'turtle', 0],
+      ['697C14EDF4', 'turtle', 1],
+      ['697C14EDF4', 'turtle', 2],
+      ['697C14EDF4', 'turtle', 3],
+      ['7AF23949B7', 'alligator', 3],
+      ['7AF23949B7', 'heron',     3],
+      ['7AF23949B7', 'squid',     3],
+    ]
+    args.each do |kata_id, avatar_name, tag|
+      tgz_filename = zip_tag(kata_id, avatar_name, tag)
+      assert File.exists? tgz_filename
+      Dir.mktmpdir('zipper') do |tmp_dir|
+        _,status = shell.cd_exec(tmp_dir, "cat #{tgz_filename} | tar xfz -")
+        assert_equal 0, status
+        tgz_dir = disk[[tmp_dir, kata_id, avatar_name, tag].join('/')]
+        masters = storer.tag_visible_files(kata_id, avatar_name, tag)
+        masters.each do |filename,expected|
+          actual = tgz_dir.read(filename)
+          assert_equal expected, actual, filename
+        end
+      end
     end
   end
-
-  #TODO: avatar-started hit-test tag 1
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Negative tests
@@ -44,18 +62,12 @@ class ZipTagTest < ZipperTestBase
       ['F6986222F0', 'spider', 1,    'tag'        ]
 
     ]
-    args.each do |kata_id, avatar_name, tag, expected|
+    args.each do |kata_id, avatar_name, tag, arg_name|
       error = assert_raises(StandardError) {
         zip_tag(kata_id, avatar_name, tag)
       }
-      assert_raises_invalid(error, expected)
+      assert error.message.end_with?("invalid #{arg_name}"), error.message
     end
-  end
-
-  private
-
-  def assert_raises_invalid(error, message)
-    assert error.message.end_with?("invalid #{message}"), error.message
   end
 
 end
