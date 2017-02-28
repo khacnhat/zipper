@@ -7,7 +7,8 @@ class ZipTagTest < TestBase
   test '2A4',
   'zip_tag empty kata_id raises' do
     error = assert_raises(StandardError) {
-      zip_tag(kata_id = ' ', 'salmon', 2) }
+      zip_tag(kata_id = '', 'salmon', 2)
+    }
     assert error.message.end_with? 'invalid kata_id'
   end
 

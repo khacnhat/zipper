@@ -43,9 +43,22 @@ class Zipper
     tgz_filename
   end
 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   def zip_tag(kata_id, avatar_name, tag)
-    manifest = storer.tag_visible_files(kata_id, avatar_name, tag)
-    # TODO
+    visible_files = storer.tag_visible_files(kata_id, avatar_name, tag)
+    tag_path = "#{zip_path}/#{kata_id}/#{avatar_name}/#{tag}"
+    shell.exec("rm -rf #{tag_path}")
+    tag_dir = disk[tag_path]
+    tag_dir.make
+    #tag_dir.write_json('manifest.json', visible_files)
+    visible_files.each do |filename, content|
+      tag_dir.write(filename, content)
+    end
+    tgz_filename = "#{zip_path}/#{kata_id}_#{avatar_name}_#{tag}.tgz"
+    tar_cmd = "tar -zcf #{tgz_filename} #{kata_id}/#{avatar_name}/#{tag}"
+    shell.cd_exec(zip_path, tar_cmd)
+    tgz_filename
   end
 
   private

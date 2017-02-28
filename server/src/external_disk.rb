@@ -49,7 +49,11 @@ class ExternalDir
   end
 
   def write_json(filename, json)
-    IO.write(path + filename, JSON.unparse(json))
+    write(filename, JSON.unparse(json))
+  end
+
+  def write(filename, content)
+    IO.write(path + filename, content)
   end
 
   def read_json(filename)
