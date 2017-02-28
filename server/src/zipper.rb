@@ -66,7 +66,7 @@ class Zipper
     end
     # strip out optional entries that weren't there
     start_point_manifest.delete_if { |_,value| value.nil? }
-    tag_dir.write_json('manifest.json', start_point_manifest)
+    tag_dir.write('manifest.json', JSON.pretty_unparse(start_point_manifest))
 
     visible_files.each do |filename, content|
       tag_dir.write(filename, content)
