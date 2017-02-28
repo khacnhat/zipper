@@ -51,7 +51,23 @@ class Zipper
     shell.exec("rm -rf #{tag_path}")
     tag_dir = disk[tag_path]
     tag_dir.make
-    #tag_dir.write_json('manifest.json', visible_files)
+
+    # Assumes kata is from after start-point re-architecture
+    kata_manifest = storer.kata_manifest(kata_id)
+    start_point_manifest = {}
+    start_point_manifest['visible_filenames'] = visible_files.keys.sort
+    required = [ 'display_name', 'image_name', 'red_amber_green' ]
+    required.each do |key|
+      start_point_manifest[key] = kata_manifest[key]
+    end
+    optional = [ 'filename_extension', 'tab_size', 'progress_regexs' ]
+    optional.each do |key|
+      start_point_manifest[key] = kata_manifest[key]
+    end
+    # strip out optional entries that weren't there
+    start_point_manifest.delete_if { |_,value| value.nil? }
+    tag_dir.write_json('manifest.json', start_point_manifest)
+
     visible_files.each do |filename, content|
       tag_dir.write(filename, content)
     end
