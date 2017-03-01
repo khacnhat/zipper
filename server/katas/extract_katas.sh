@@ -4,10 +4,9 @@ set -e
 # I want zipper to be decoupled from web for its testing so
 # I'm unable to create new katas in the storer.
 # So I
-#  o) extract known katas from a live storer (extract_katas.sh)
-#  o) create a new data-container (create_data_container.sh)
-#  o) save them into a volume (using fill_data_container.sh) which I then
-#     mount as storer's volume.
+#  o) extract known katas from a private cyber-dojo (this file)
+#  o) create a new storer-data-container from them (in docker-compose.yml)
+#  o) mount the volumes from this container (in docker-compose.yml)
 #
 # DADD67B4EF is an empty kata
 # F6986222F0 is a kata with one avatar and no traffic-lights
@@ -48,6 +47,10 @@ mv usr/src/cyber-dojo/katas/69/7C14EDF4 69
 rm -rf 7A
 mkdir 7A
 mv usr/src/cyber-dojo/katas/7A/F23949B7 7A
+
+rm -rf 9E
+mkdir 9E
+mv usr/src/cyber-dojo/katas/9E/EBD21136 9E
 
 rm -rf usr
 rm extract.tar

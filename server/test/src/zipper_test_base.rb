@@ -15,11 +15,14 @@ class ZipperTestBase < HexMiniTest
 
   def ids
     [
+      # C (gcc), assert [no progress_regexs]
       'DADD67B4EF', # empty kata
       'F6986222F0', # (spider) no traffic-lights
       '1D1B0BE42D', # (hippo) one traffic-lights
       '697C14EDF4', # (turtle) three traffic-lights
       '7AF23949B7', # (alligator,heron,squid) each with three traffic-lights
+      # C (gcc), CppUTest [has progress_regexs]
+      '9EEBD21136', # (turtle) three traffic-lights
     ]
   end
 

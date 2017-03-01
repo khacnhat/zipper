@@ -27,6 +27,7 @@ class ZipTagTest < ZipperTestBase
       ['7AF23949B7', 'alligator', 3],
       ['7AF23949B7', 'heron',     3],
       ['7AF23949B7', 'squid',     3],
+      ['9EEBD21136', 'turtle',    3],
     ]
     args.each do |kata_id, avatar_name, tag|
       tgz_filename = zip_tag(kata_id, avatar_name, tag)
@@ -51,9 +52,13 @@ class ZipTagTest < ZipperTestBase
           refute_nil start_point_manifest[key]
           assert_equal kata_manifest[key], start_point_manifest[key]
         end
-        optional = [ 'filename_extension', 'tab_size', 'progress_regexs' ]
+        optional = [ 'filename_extension', 'tab_size' ]
         optional.each do |key|
           assert_equal kata_manifest[key], start_point_manifest[key]
+        end
+        patched = 'progress_regexs'
+        unless kata_manifest[patched] == []
+          assert_equal kata_manifest[patched], start_point_manifest[patched]
         end
       end
     end

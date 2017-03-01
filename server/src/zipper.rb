@@ -61,9 +61,13 @@ class Zipper
     required.each do |key|
       start_point_manifest[key] = kata_manifest[key]
     end
-    optional = [ 'filename_extension', 'tab_size', 'progress_regexs' ]
+    optional = [ 'filename_extension', 'tab_size' ]
     optional.each do |key|
       start_point_manifest[key] = kata_manifest[key]
+    end
+    patched = 'progress_regexs'
+    if kata_manifest[patched] != []
+      start_point_manifest[patched] = kata_manifest[patched]
     end
     # strip out optional entries that weren't there
     start_point_manifest.delete_if { |_,value| value.nil? }
