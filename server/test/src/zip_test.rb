@@ -30,7 +30,8 @@ class ZipTest < ZipperTestBase
 
   test '561',
   'zip format is ready for saving directly into storer' do
-    ids.each do |id|
+    started_kata_ids = started_kata_args.map { |args| args[0] }
+    (started_kata_ids + [ unstarted_kata_id ]).each do |id|
       tgz_filename = zip(id)
       assert_json_zipped(id, tgz_filename)
     end
