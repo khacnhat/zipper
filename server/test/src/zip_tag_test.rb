@@ -36,6 +36,7 @@ class ZipTagTest < ZipperTestBase
         assert_equal 0, status
         tgz_dir = disk[[tmp_dir, kata_id, avatar_name, tag].join('/')]
         visible_files = storer.tag_visible_files(kata_id, avatar_name, tag)
+        visible_files.delete('output')
         visible_files.each do |filename,expected|
           actual = tgz_dir.read(filename)
           assert_equal expected, actual, filename

@@ -47,6 +47,7 @@ class Zipper
 
   def zip_tag(kata_id, avatar_name, tag)
     visible_files = storer.tag_visible_files(kata_id, avatar_name, tag)
+    visible_files.delete('output')
     tag_path = "#{zip_path}/#{kata_id}/#{avatar_name}/#{tag}"
     shell.exec("rm -rf #{tag_path}")
     tag_dir = disk[tag_path]
