@@ -31,3 +31,24 @@ The caller must share the tgz directory (/tmp_zipper) with zipper.
   { "zip": "/tmp_zipper/A551C528C3.tgz" }
 ```
 
+- - - -
+
+# zip_tag
+Creates a tgz file of visible files associated with the kata with
+the given kata_id, the avatar with the given avatar_name, and the
+traffic-light with the given tag. The tgz file also contains a
+manifest.json file suitable for creating a custom
+[start-point](http://blog.cyber-dojo.org/2016/08/creating-your-own-start-points.html).
+The caller must share the tgz directory (/tmp_zipper) with zipper.
+- parameters, eg
+```
+  {  "kata_id": "A551C528C3",
+     "avatar_name": "salmon",
+     "tag": 23
+  }
+```
+- returns the filename of the created tgz file, eg
+```
+  { "zip_tag": "/tmp_zipper/A551C528C3_salmon_23.tgz" }
+```
+
