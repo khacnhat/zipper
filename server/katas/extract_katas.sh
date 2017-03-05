@@ -13,6 +13,7 @@ set -e
 # 1D1B0BE42D is a kata with one avatar and one traffic-lights
 # 697C14EDF4 is a kata with one avatar and three traffic-lights
 # 7AF23949B7 is a kata with three avatar each with three traffic-lights
+# 9EEBD21136 is a kata using CppUTest (has progress_regexs)
 
 my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 cd ${my_dir}
