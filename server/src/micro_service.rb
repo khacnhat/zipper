@@ -4,20 +4,20 @@ require 'json'
 
 class MicroService < Sinatra::Base
 
-  post '/zip' do
-    poster(__method__, kata_id)
+  get '/zip' do
+    getter(__method__, kata_id)
   end
 
-  post '/zip_tag' do
-    poster(__method__, kata_id, avatar_name, tag)
+  get '/zip_tag' do
+    getter(__method__, kata_id, avatar_name, tag)
   end
 
   private
 
   include Externals
 
-  def poster(name, *args)
-    zipper_json('POST /', name, *args)
+  def getter(name, *args)
+    zipper_json('GET /', name, *args)
   end
 
   def zipper_json(prefix, caller, *args)

@@ -9,7 +9,7 @@ class ZipTagTest < TestBase
     error = assert_raises(StandardError) {
       zip_tag(kata_id = '', 'salmon', 2)
     }
-    assert error.message.end_with? 'invalid kata_id'
+    assert error.message.end_with?('invalid kata_id'), error.message
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - -

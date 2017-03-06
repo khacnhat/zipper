@@ -1,3 +1,4 @@
+require 'base64'
 require_relative 'zipper_test_base'
 require_relative '../../src/id_splitter'
 
@@ -10,17 +11,19 @@ class ZipTagTest < ZipperTestBase
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # Positive tests
+  # Positive test
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '2A8',
-  'zip_tag unzipped content match masters in storer',
-  'on started avatar with no tests tag-0 successful' do
+  'zip_tag() unzipped content matches storer content' do
     started_kata_args.each do |kata_id, avatar_name, max_tag|
       (0..max_tag).each do |tag|
-        tgz_filename = zip_tag(kata_id, avatar_name, tag)
-        assert File.exists? tgz_filename
-        Dir.mktmpdir('zipper') do |tmp_dir|
+        Dir.mktmpdir('downloader') do |tmp_dir|
+
+          encoded = zip_tag(kata_id, avatar_name, tag)
+          tgz_filename = "#{tmp_dir}/#{kata_id}_#{avatar_name}_#{tag}.tgz"
+          File.open(tgz_filename, 'wb') { |file| file.write(Base64.decode64(encoded)) }
+
           _,status = shell.cd_exec(tmp_dir, "cat #{tgz_filename} | tar xfz -")
           assert_equal 0, status
           tgz_dir = disk[[tmp_dir, kata_id, avatar_name, tag].join('/')]

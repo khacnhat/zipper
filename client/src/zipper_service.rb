@@ -3,11 +3,11 @@ require_relative 'http_service'
 class ZipperService
 
   def zip(kata_id)
-    post(__method__, kata_id)
+    get(__method__, kata_id)
   end
 
   def zip_tag(kata_id, avatar_name, tag)
-    post(__method__, kata_id, avatar_name, tag)
+    get(__method__, kata_id, avatar_name, tag)
   end
 
   private

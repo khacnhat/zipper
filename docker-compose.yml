@@ -11,11 +11,9 @@ services:
     tmpfs: /tmp
     depends_on:
       - zipper
-      - zipper-shared-tmp-container
       - zipper-client-coverage-container
     volumes_from:
       - storer-data-container:ro
-      - zipper-shared-tmp-container:ro
       - zipper-client-coverage-container:rw
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
@@ -36,14 +34,11 @@ services:
     tmpfs: /tmp
     depends_on:
       - storer
-      - zipper-shared-tmp-container
       - zipper-server-coverage-container
     volumes_from:
-      - zipper-shared-tmp-container:rw
       - zipper-server-coverage-container:rw
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
-      - CYBER_DOJO_ZIPPER_ROOT
     build:
       context: server
       args:
@@ -79,14 +74,6 @@ services:
     volumes:
       - /${CYBER_DOJO_COVERAGE_ROOT}
     command: "chown zipper:zipper ${CYBER_DOJO_COVERAGE_ROOT}"
-
-
-  zipper-shared-tmp-container:
-    image: cyberdojo/zipper
-    container_name: zipper-shared-tmp-container
-    volumes:
-      - /${CYBER_DOJO_ZIPPER_ROOT}
-    command: "chown zipper:zipper ${CYBER_DOJO_ZIPPER_ROOT}"
 
 
   storer-data-container:

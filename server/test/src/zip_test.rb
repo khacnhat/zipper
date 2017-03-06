@@ -1,3 +1,4 @@
+require 'base64'
 require_relative 'zipper_test_base'
 require_relative 'null_logger'
 require_relative '../../src/id_splitter'
@@ -32,16 +33,18 @@ class ZipTest < ZipperTestBase
   'zip format is ready for saving directly into storer' do
     started_kata_ids = started_kata_args.map { |args| args[0] }
     (started_kata_ids + [ unstarted_kata_id ]).each do |id|
-      tgz_filename = zip(id)
-      assert_json_zipped(id, tgz_filename)
+      encoded = zip(id)
+      assert_unzip_matches_storer(id, encoded)
     end
   end
 
   private
 
-  def assert_json_zipped(id, tgz_filename)
-    assert File.exists?(tgz_filename), "File.exists?(#{tgz_filename})"
+  def assert_unzip_matches_storer(id, encoded)
     Dir.mktmpdir('zipper') do |tmp_dir|
+      tgz_filename = "#{tmp_dir}/#{id}.tgz"
+      File.open(tgz_filename, 'wb') { |file| file.write(Base64.decode64(encoded)) }
+
       _,status = shell.cd_exec(tmp_dir, "cat #{tgz_filename} | tar xfz -")
       assert_equal 0, status
 
@@ -64,7 +67,7 @@ class ZipTest < ZipperTestBase
           tag_path = "#{avatar_path}/#{tag}"
           zipper_tag = disk[tag_path].read_json('manifest.json')
           storer_tag = storer.tag_visible_files(id, avatar_name, tag)
-          assert_equal storer_tag, zipper_tag, "tag is are the same"
+          assert_equal storer_tag, zipper_tag, 'tag is are the same'
         end
       end
     end

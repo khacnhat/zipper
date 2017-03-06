@@ -3,10 +3,10 @@ require 'net/http'
 
 module HttpService # mix-in
 
-  def post(method, *args)
+  def get(method, *args)
     name = method.to_s
     json = http(name, args_hash(name, *args)) do |uri|
-      Net::HTTP::Post.new(uri)
+      Net::HTTP::Get.new(uri)
     end
     result(json, name)
   end
