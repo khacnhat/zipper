@@ -61,7 +61,7 @@ services:
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   zipper-client-coverage-container:
-    image: cyberdojo/zipper
+    image: cyberdojo/zipper_client
     container_name: zipper-client-coverage-container
     volumes:
       - /${CYBER_DOJO_COVERAGE_ROOT}
