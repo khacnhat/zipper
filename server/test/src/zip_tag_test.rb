@@ -38,7 +38,7 @@ class ZipTagTest < ZipperTestBase
           assert_equal visible_files.keys.sort, start_point_manifest['visible_filenames']
 
           kata_manifest = storer.kata_manifest(kata_id)
-          required = [ 'display_name', 'image_name', 'red_amber_green' ]
+          required = [ 'display_name', 'image_name' ]
           required.each do |key|
             refute_nil start_point_manifest[key]
             assert_equal kata_manifest[key], start_point_manifest[key]
