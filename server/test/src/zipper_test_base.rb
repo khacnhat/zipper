@@ -27,6 +27,7 @@ class ZipperTestBase < HexMiniTest
       ['7AF23949B7', 'squid',     3],
       # C (gcc), CppUTest [has progress_regexs]
       ['9EEBD21136', 'turtle',    3],
+      ['3FAFDE61E4', 'lion',      7]
     ]
   end
 

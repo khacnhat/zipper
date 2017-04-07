@@ -59,7 +59,7 @@ class Zipper
       kata_manifest = storer.kata_manifest(kata_id)
       start_point_manifest = {}
       start_point_manifest['visible_filenames'] = visible_files.keys.sort
-      required = [ 'display_name', 'image_name', 'red_amber_green' ]
+      required = [ 'display_name', 'image_name' ]
       required.each do |key|
         start_point_manifest[key] = kata_manifest[key]
       end
@@ -75,8 +75,10 @@ class Zipper
       start_point_manifest.delete_if { |_,value| value.nil? }
       tag_dir.write('manifest.json', JSON.pretty_unparse(start_point_manifest))
 
-      visible_files.each do |filename, content|
-        tag_dir.write(filename, content)
+      visible_files.each do |pathed_filename, content|
+        src_dir = disk[tag_path + '/' + File.dirname(pathed_filename)]
+        src_dir.make
+        src_dir.write(File.basename(pathed_filename), content)
       end
       tgz_filename = "#{tmp_zip_path}/#{kata_id}_#{avatar_name}_#{tag}.tgz"
       tar_cmd = "tar -zcf #{tgz_filename} #{kata_id}/#{avatar_name}/#{tag}"

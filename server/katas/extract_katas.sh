@@ -14,6 +14,7 @@ set -e
 # 697C14EDF4 is a kata with one avatar and three traffic-lights
 # 7AF23949B7 is a kata with three avatar each with three traffic-lights
 # 9EEBD21136 is a kata using CppUTest (has progress_regexs)
+# 3FAFDE61E4 is a kata with nested sub-dirs
 
 my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 cd ${my_dir}
@@ -52,6 +53,10 @@ mv usr/src/cyber-dojo/katas/7A/F23949B7 7A
 rm -rf 9E
 mkdir 9E
 mv usr/src/cyber-dojo/katas/9E/EBD21136 9E
+
+rm -rf 3F
+mkdir 3F
+mv usr/src/cyber-dojo/katas/3F/AFDE61E4 3F
 
 rm -rf usr
 rm extract.tar
