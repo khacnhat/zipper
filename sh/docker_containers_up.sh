@@ -3,7 +3,6 @@ set -e
 
 readonly ROOT_DIR="$( cd "$( dirname "${0}" )" && cd .. && pwd )"
 
-docker-compose --file ${ROOT_DIR}/docker-compose.yml down --volumes
 docker-compose --file ${ROOT_DIR}/docker-compose.yml up -d
 
 sleep 1
