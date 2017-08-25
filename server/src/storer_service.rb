@@ -1,4 +1,4 @@
-require_relative 'http_service'
+require_relative 'http_json_service'
 
 class StorerService
 
@@ -23,7 +23,7 @@ class StorerService
 
   private
 
-  include HttpService
+  include HttpJsonService
 
   def hostname
     'storer'
