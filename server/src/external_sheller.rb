@@ -39,6 +39,8 @@ class ExternalSheller
 
   include NearestAncestors
 
-  def log; nearest_ancestors(:log); end
+  def log
+    nearest_ancestors(:log)
+  end
 
 end

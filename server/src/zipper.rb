@@ -92,8 +92,17 @@ class Zipper
   include IdSplitter
 
   include NearestAncestors
-  def storer; nearest_ancestors(:storer); end
-  def  shell; nearest_ancestors(:shell ); end
-  def   disk; nearest_ancestors(:disk  ); end
+
+  def storer
+    nearest_ancestors(:storer)
+  end
+
+  def shell
+    nearest_ancestors(:shell)
+  end
+
+  def disk
+    nearest_ancestors(:disk)
+  end
 
 end

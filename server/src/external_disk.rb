@@ -67,6 +67,9 @@ class ExternalDir
   private
 
   include NearestAncestors
-  def shell; nearest_ancestors(:shell); end
+
+  def shell
+    nearest_ancestors(:shell)
+  end
 
 end

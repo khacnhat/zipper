@@ -24,7 +24,13 @@ class StorerService
   private
 
   include HttpService
-  def hostname; 'storer'; end
-  def port; 4577; end
+
+  def hostname
+    'storer'
+  end
+
+  def port
+    4577
+  end
 
 end
