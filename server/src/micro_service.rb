@@ -16,12 +16,8 @@ class MicroService < Sinatra::Base
 
   include Externals
 
-  def getter(name, *args)
-    zipper_json('GET /', name, *args)
-  end
-
-  def zipper_json(prefix, caller, *args)
-    name = caller.to_s[prefix.length .. -1]
+  def getter(caller, *args)
+    name = caller.to_s['GET /'.length .. -1]
     { name => zipper.send(name, *args) }.to_json
   rescue Exception => e
     log << "EXCEPTION: #{e.class.name}.#{caller} #{e.message}"
