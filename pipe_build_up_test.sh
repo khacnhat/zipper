@@ -7,8 +7,8 @@ set -e
 #
 #docker-machine ssh default "sudo date -u $(date -u +%m%d%H%M%Y)"
 
-my_dir="$( cd "$( dirname "${0}" )" && pwd )"
+readonly SH_DIR="$( cd "$( dirname "${0}" )" && pwd )/sh"
 
-${my_dir}/build.sh
-${my_dir}/up.sh
-${my_dir}/test.sh ${*}
+${SH_DIR}/build_docker_images.sh
+${SH_DIR}/docker_containers_up.sh
+${SH_DIR}/run_tests_in_containers.sh ${*}

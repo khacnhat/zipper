@@ -1,9 +1,10 @@
 #!/bin/bash
 set -e
 
-my_dir="$( cd "$( dirname "${0}" )" && pwd )"
-docker-compose --file ${my_dir}/docker-compose.yml down --volumes
-docker-compose --file ${my_dir}/docker-compose.yml up -d
+readonly ROOT_DIR="$( cd "$( dirname "${0}" )" && cd .. && pwd )"
+
+docker-compose --file ${ROOT_DIR}/docker-compose.yml down --volumes
+docker-compose --file ${ROOT_DIR}/docker-compose.yml up -d
 
 sleep 1
 
