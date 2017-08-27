@@ -3,6 +3,9 @@ MAINTAINER Jon Jagger <jon@jaggersoft.com>
 
 RUN adduser -D -H zipper
 
+RUN apk update \
+  && apk add git
+
 COPY . /app
 
 ARG PORT
