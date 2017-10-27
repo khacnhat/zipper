@@ -1,9 +1,14 @@
 require_relative '../hex_mini_test'
 require_relative '../../src/externals'
+require_relative '../../src/zipper'
 
 class ZipperTestBase < HexMiniTest
 
   include Externals
+
+  def zipper
+    Zipper.new(self)
+  end
 
   def zip(kata_id)
     zipper.zip(kata_id)

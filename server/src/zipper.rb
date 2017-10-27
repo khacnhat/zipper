@@ -1,6 +1,6 @@
-require 'base64'
 require_relative 'id_splitter'
 require_relative 'nearest_ancestors'
+require 'base64'
 
 class Zipper
 

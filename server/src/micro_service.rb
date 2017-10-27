@@ -1,46 +1,41 @@
 require_relative 'externals'
-require 'sinatra/base'
+require_relative 'zipper'
 require 'json'
 
-class MicroService < Sinatra::Base
+class MicroService
 
-  get '/zip' do
-    getter(__method__, kata_id)
-  end
-
-  get '/zip_tag' do
-    getter(__method__, kata_id, avatar_name, tag)
+  def call(env)
+    request = Rack::Request.new(env)
+    @args = JSON.parse(request.body.read)
+    case request.path_info
+      when /zip_tag/
+        body = invoke('zip_tag', kata_id, avatar_name, tag)
+      when /zip/
+        body = invoke('zip', kata_id)
+    end
+    [ 200, { 'Content-Type' => 'application/json' }, [ body.to_json ] ]
   end
 
   private
 
-  include Externals
-
-  def getter(caller, *args)
-    name = caller.to_s['GET /'.length .. -1]
-    { name => zipper.send(name, *args) }.to_json
+  def invoke(name, *args)
+    zipper = Zipper.new(self)
+    { name => zipper.send(name, *args) }
   rescue Exception => e
     log << "EXCEPTION: #{e.class.name}.#{caller} #{e.message}"
-    { 'exception' => e.message }.to_json
+    { 'exception' => e.message }
   end
 
   # - - - - - - - - - - - - - - - -
 
+  include Externals
+
   def self.request_args(*names)
     names.each { |name|
-      define_method name, &lambda { args[name.to_s] }
+      define_method name, &lambda { @args[name.to_s] }
     }
   end
 
   request_args :kata_id, :avatar_name, :tag
-
-  def args
-    @args ||= JSON.parse(request_body_args)
-  end
-
-  def request_body_args
-    request.body.rewind
-    request.body.read
-  end
 
 end
