@@ -21,7 +21,7 @@ class ExternalDiskDirTest < ZipperTestBase
   'disk[path].make returns',
   'true when it makes the directory',
   'false when it does not' do
-    refute dir.exists?
+    refute dir.exists?, 'dir already exists!'
     assert dir.make
     assert dir.exists?
     refute dir.make
@@ -33,7 +33,7 @@ class ExternalDiskDirTest < ZipperTestBase
   'object = read_json(filename) after write_json(filename, object) round-strips ok' do
     filename = 'object.json'
     dir.make
-    refute dir.exists? filename
+    refute dir.exists?(filename), "#{filename} already exists!"
     dir.write_json(filename, { 'a' => 1, 'b' => 2 })
     assert dir.exists? filename
     json = dir.read_json(filename)
