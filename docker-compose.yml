@@ -1,11 +1,12 @@
 
-version: '2'
+version: '2.2'
 
 services:
 
   zipper_client:
     user: nobody
     image: cyberdojo/zipper_client
+    init: true
     container_name: zipper_client
     read_only: true
     tmpfs: /tmp
@@ -29,6 +30,7 @@ services:
   zipper:
     user: zipper
     image: cyberdojo/zipper
+    init: true
     container_name: zipper_server
     read_only: true
     tmpfs: /tmp
@@ -48,6 +50,7 @@ services:
   storer:
     user: nobody
     image: cyberdojo/storer
+    init: true
     container_name: storer_server
     depends_on:
       - storer-data-container
