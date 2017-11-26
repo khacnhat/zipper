@@ -3,7 +3,13 @@ require_relative 'null_logger'
 
 class ExternalDiskDirTest < ZipperTestBase
 
-  def self.hex_prefix; '437'; end
+  def self.hex_prefix
+    '43779'
+  end
+
+  def hex_setup
+    `rm -rf #{path}`
+  end
 
   def log
     @log ||= NullLogger.new(self)
@@ -32,10 +38,10 @@ class ExternalDiskDirTest < ZipperTestBase
   test '39D',
   'object = read_json(filename) after write_json(filename, object) round-strips ok' do
     filename = 'object.json'
-    dir.make
+    assert dir.make
     refute dir.exists?(filename), "#{filename} already exists!"
     dir.write_json(filename, { 'a' => 1, 'b' => 2 })
-    assert dir.exists? filename
+    assert dir.exists?(filename)
     json = dir.read_json(filename)
     assert_equal 1, json['a']
     assert_equal 2, json['b']
@@ -45,19 +51,19 @@ class ExternalDiskDirTest < ZipperTestBase
 
   test 'ACA',
   'disk.dir?(.) is true' do
-    dir.make
+    assert dir.make
     assert disk.dir?(path + '/' + '.')
   end
 
   test 'A3F',
   'disk.dir?(..) is true' do
-    dir.make
+    assert dir.make
     assert disk.dir?(path + '/' + '..')
   end
 
   test 'E82',
   'disk.dir?(a-dir) is true' do
-    dir.make
+    assert dir.make
     assert disk.dir?(path)
   end
 

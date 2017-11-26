@@ -5,7 +5,9 @@ class IdSplitterTest < ZipperTestBase
 
   include IdSplitter
 
-  def self.hex_prefix; '80D'; end
+  def self.hex_prefix
+    '80DBC'
+  end
 
   test 'E81',
   'outer(id) is first 2 chars of id in uppercase' do

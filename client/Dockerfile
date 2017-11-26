@@ -1,4 +1,4 @@
-FROM  docker:latest
+FROM  alpine:latest
 LABEL maintainer=jon@jaggersoft.com
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -28,7 +28,10 @@ RUN export RACK_ENV='production'
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # setup client
+# tar is needed to tar-pipe test coverage out of tmpfs.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+RUN apk --update --no-cache add tar
 
 COPY . /app
 ARG PORT

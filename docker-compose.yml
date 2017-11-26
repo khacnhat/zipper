@@ -12,10 +12,8 @@ services:
     tmpfs: /tmp
     depends_on:
       - zipper
-      - zipper-client-coverage-container
     volumes_from:
       - storer-data-container:ro
-      - zipper-client-coverage-container:rw
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
       - CYBER_DOJO_KATAS_ROOT
@@ -26,6 +24,7 @@ services:
     ports:
       - ${CYBER_DOJO_ZIPPER_CLIENT_PORT}:${CYBER_DOJO_ZIPPER_CLIENT_PORT}
 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   zipper:
     user: zipper
@@ -36,9 +35,6 @@ services:
     tmpfs: /tmp
     depends_on:
       - storer
-      - zipper-server-coverage-container
-    volumes_from:
-      - zipper-server-coverage-container:rw
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
     build:
@@ -46,38 +42,23 @@ services:
       args:
         - PORT=${CYBER_DOJO_ZIPPER_SERVER_PORT}
 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   storer:
     user: nobody
     image: cyberdojo/storer
     init: true
     container_name: storer_server
+    read_only: true
+    tmpfs: /tmp
     depends_on:
       - storer-data-container
     volumes_from:
       - storer-data-container:ro
-    read_only: true
-    tmpfs: /tmp
     environment:
       - CYBER_DOJO_KATAS_ROOT
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  zipper-client-coverage-container:
-    image: cyberdojo/zipper_client
-    container_name: zipper-client-coverage-container
-    volumes:
-      - /${CYBER_DOJO_COVERAGE_ROOT}
-    command: "chown nobody:nobody ${CYBER_DOJO_COVERAGE_ROOT}"
-
-
-  zipper-server-coverage-container:
-    image: cyberdojo/zipper
-    container_name: zipper-server-coverage-container
-    volumes:
-      - /${CYBER_DOJO_COVERAGE_ROOT}
-    command: "chown zipper:zipper ${CYBER_DOJO_COVERAGE_ROOT}"
-
 
   storer-data-container:
     image: cyberdojo/storer
