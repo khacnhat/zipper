@@ -3,7 +3,9 @@ require_relative '../../src/nearest_ancestors'
 
 class TestNearestAncestors < ZipperTestBase
 
-  def self.hex_prefix; '9D4'; end
+  def self.hex_prefix
+    '9D4DF'
+  end
 
   def hex_setup
     anna = Anna.new

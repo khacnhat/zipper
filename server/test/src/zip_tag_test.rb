@@ -4,7 +4,9 @@ require_relative '../../src/id_splitter'
 
 class ZipTagTest < ZipperTestBase
 
-  def self.hex_prefix; '0AA'; end
+  def self.hex_prefix
+    '0AA1E'
+  end
 
   def log
     @log ||= NullLogger.new(self)

@@ -2,7 +2,9 @@ require_relative 'zipper_test_base'
 
 class ExternalStdoutLoggerTest < ZipperTestBase
 
-  def self.hex_prefix; '1B6'; end
+  def self.hex_prefix
+    '1B6B4'
+  end
 
   test '962',
   '<< writes to stdout with added trailing newline' do

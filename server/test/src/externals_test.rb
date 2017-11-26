@@ -2,7 +2,9 @@ require_relative 'zipper_test_base'
 
 class ExternalsTest < ZipperTestBase
 
-  def self.hex_prefix; '7A9'; end
+  def self.hex_prefix
+    '7A98A'
+  end
 
   test '920',
   'default file is ExternalDisk' do
