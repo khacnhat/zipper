@@ -7,7 +7,7 @@ services:
     user: nobody
     image: cyberdojo/zipper_client
     init: true
-    container_name: zipper_client
+    container_name: test_zipper_client
     read_only: true
     tmpfs: /tmp
     depends_on:
@@ -31,7 +31,7 @@ services:
     user: zipper
     image: cyberdojo/zipper
     init: true
-    container_name: zipper_server
+    container_name: test_zipper_server
     read_only: true
     tmpfs: /tmp
     depends_on:
@@ -46,10 +46,10 @@ services:
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   storer:
-    user: nobody
+    user: cyber-dojo
     image: cyberdojo/storer
     init: true
-    container_name: storer_server
+    container_name: test_zipper_storer_server
     read_only: true
     tmpfs: /tmp
     depends_on:
@@ -62,7 +62,7 @@ services:
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   storer-data-container:
-    image: cyberdojo/storer
-    container_name: storer-data-container
+    image: alpine:latest
+    container_name: test-zipper-storer-data-container
     volumes:
       - ./server/katas:${CYBER_DOJO_KATAS_ROOT}:ro

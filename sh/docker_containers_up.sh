@@ -24,6 +24,6 @@ docker-compose \
   up -d \
   --force-recreate
 
-wait_till_up 'zipper_server'
-wait_till_up 'zipper_client'
-wait_till_up 'storer_server'
+wait_till_up 'test_zipper_server'
+wait_till_up 'test_zipper_client'
+wait_till_up 'test_zipper_storer_server'
