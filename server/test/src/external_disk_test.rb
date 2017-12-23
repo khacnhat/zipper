@@ -74,8 +74,6 @@ class ExternalDiskDirTest < ZipperTestBase
     refute disk.dir?('blah-blah')
   end
 
-  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   private
 
   def dir

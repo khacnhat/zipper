@@ -12,6 +12,7 @@ services:
     tmpfs: /tmp
     depends_on:
       - zipper
+      - storer
     volumes_from:
       - storer-data-container:ro
     environment:

@@ -13,7 +13,13 @@ class ZipperService
   private
 
   include HttpService
-  def hostname; 'zipper'; end
-  def port; '4587'; end
+
+  def hostname
+    'zipper'
+  end
+
+  def port
+    '4587'
+  end
 
 end

@@ -1,20 +1,23 @@
 #!/bin/bash
 set -e
 
-# I want zipper to be decoupled from web for its testing so
-# I'm unable to create new katas in the storer.
+# I want zipper to be decoupled from web for its testing
+# so I'm unable to create new katas in the storer.
 # So I
-#  o) extract known katas from a private cyber-dojo (this file)
-#  o) create a new storer-data-container from them (in docker-compose.yml)
-#  o) mount the volumes from this container (in docker-compose.yml)
+#  o) extract known katas from a private cyber-dojo
+#     (this file, one-time operation)
+#  o) create a new storer-data-container from them
+#     (in docker-compose.yml)
+#  o) mount the volumes from this container
+#     (in docker-compose.yml)
 #
-# DADD67B4EF is an empty kata
-# F6986222F0 is a kata with one avatar and no traffic-lights
-# 1D1B0BE42D is a kata with one avatar and one traffic-lights
-# 697C14EDF4 is a kata with one avatar and three traffic-lights
-# 7AF23949B7 is a kata with three avatar each with three traffic-lights
-# 9EEBD21136 is a kata using CppUTest (has progress_regexs)
-# 3FAFDE61E4 is a kata with nested sub-dirs
+# DADD67B4EF an empty kata
+# 9EEBD21136 uses CppUTest (has progress_regexs)
+# 3FAFDE61E4 has nested sub-dirs
+# F6986222F0 has one avatar and no traffic-lights
+# 1D1B0BE42D has one avatar and one traffic-lights
+# 697C14EDF4 has one avatar and three traffic-lights
+# 7AF23949B7 has three avatar each with three traffic-lights
 
 my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 cd ${my_dir}
@@ -22,10 +25,12 @@ cd ${my_dir}
 CONTAINER_NAME=cyber-dojo-katas-DATA-CONTAINER
 VOLUME_PATH=/usr/src/cyber-dojo/katas
 
-docker run --rm \
+# create tgz file
+docker run \
+  --rm \
   --volumes-from ${CONTAINER_NAME} \
   --volume $(pwd):/extract \
-  cyberdojo/ruby \
+  alpine:latest \
   tar cvf /extract/extract.tar ${VOLUME_PATH}
 
 tar -xvf extract.tar
