@@ -75,7 +75,6 @@ class ZipTagTest < ZipperTestBase
       [ukid, 'salmon', 0,      'avatar_name'],
       [skid, skan,    '',      'tag'        ],
       [skid, skan,  'xx',      'tag'        ],
-      [skid, skan,    -1,      'tag'        ],
       [skid, skan,     1,      'tag'        ],
     ]
     args.each do |kata_id, avatar_name, tag, arg_name|
