@@ -14,7 +14,7 @@ services:
       - zipper
       - storer
     volumes:
-      - ./server/katas:${CYBER_DOJO_KATAS_ROOT}:ro
+      - ./server/test/katas:${CYBER_DOJO_KATAS_ROOT}:ro
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
       - CYBER_DOJO_KATAS_ROOT
@@ -53,7 +53,7 @@ services:
     read_only: true
     tmpfs: /tmp
     volumes:
-      - ./server/katas:${CYBER_DOJO_KATAS_ROOT}:ro
+      - ./server/test/katas:${CYBER_DOJO_KATAS_ROOT}:ro
     environment:
       - CYBER_DOJO_KATAS_ROOT
 
