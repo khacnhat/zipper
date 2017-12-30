@@ -1,38 +1,48 @@
 FROM  alpine:latest
 LABEL maintainer=jon@jaggersoft.com
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# install ruby
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - -
+# install ruby+
+# tar is needed to tar-pipe test coverage out of tmpfs.
+# git is needed for the service
+# - - - - - - - - - - - - - - - - - -
 
 RUN apk --update --no-cache add \
-    ruby ruby-dev ruby-bundler \
-    bash
+    bash \
+    git \
+    ruby-dev \
+    ruby-bundler \
+    tar
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - -
 # install ruby gems
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - -
 
-RUN echo 'gem: --no-document' > ~/.gemrc
-COPY Gemfile /app/
-WORKDIR /app
+ARG                ZIPPER_HOME=/app
+RUN     mkdir -p ${ZIPPER_HOME}
+COPY    Gemfile  ${ZIPPER_HOME}
+WORKDIR          ${ZIPPER_HOME}
 
 RUN apk --update add --virtual build-dependencies build-base \
   && bundle config --global silence_root_warning 1 \
   && bundle install \
-  && gem clean \
   && apk del build-dependencies \
   && rm -vrf /var/cache/apk/*
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# setup client
-# tar is needed to tar-pipe test coverage out of tmpfs.
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - -
+# copy source & set ownership
+# - - - - - - - - - - - - - - - - - -
 
-RUN apk --update --no-cache add tar
+COPY . ${ZIPPER_HOME}
+RUN  chown -R nobody:nogroup ${ZIPPER_HOME}
+USER nobody
 
-COPY . /app
+# - - - - - - - - - - - - - - - - - -
+# bring it up
+# - - - - - - - - - - - - - - - - - -
+
 ARG PORT
 EXPOSE ${PORT}
 ENV PORT=${PORT}
+
 CMD [ "./up.sh" ]

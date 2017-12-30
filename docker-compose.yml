@@ -28,7 +28,7 @@ services:
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   zipper:
-    user: zipper
+    user: nobody
     image: cyberdojo/zipper
     init: true
     container_name: test_zipper_server
