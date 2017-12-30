@@ -13,8 +13,8 @@ services:
     depends_on:
       - zipper
       - storer
-    volumes_from:
-      - storer-data-container:ro
+    volumes:
+      - ./server/katas:${CYBER_DOJO_KATAS_ROOT}:ro
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
       - CYBER_DOJO_KATAS_ROOT
@@ -52,17 +52,8 @@ services:
     container_name: test_zipper_storer_server
     read_only: true
     tmpfs: /tmp
-    depends_on:
-      - storer-data-container
-    volumes_from:
-      - storer-data-container:ro
+    volumes:
+      - ./server/katas:${CYBER_DOJO_KATAS_ROOT}:ro
     environment:
       - CYBER_DOJO_KATAS_ROOT
 
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  storer-data-container:
-    image: alpine:latest
-    container_name: test-zipper-storer-data-container
-    volumes:
-      - ./server/katas:${CYBER_DOJO_KATAS_ROOT}:ro
