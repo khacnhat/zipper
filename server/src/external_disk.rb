@@ -1,19 +1,16 @@
-require_relative 'nearest_ancestors'
 
 class ExternalDisk
 
-  def initialize(parent)
-    @parent = parent
+  def initialize(externals)
+    @externals = externals
   end
-
-  attr_reader :parent
 
   def dir?(name)
     File.directory?(name)
   end
 
   def [](name)
-    ExternalDir.new(self, name)
+    ExternalDir.new(@externals, self, name)
   end
 
 end
@@ -22,14 +19,11 @@ end
 
 class ExternalDir
 
-  def initialize(disk, path)
+  def initialize(externals, disk, path)
+    @externals = externals
     @disk = disk
     @path = path
     @path += '/' unless @path.end_with?('/')
-  end
-
-  def parent
-    @disk
   end
 
   attr_reader :path
@@ -64,12 +58,10 @@ class ExternalDir
     IO.read(path + filename)
   end
 
-  private
-
-  include NearestAncestors
+  private # = = = = = = = = = = = = = = =
 
   def shell
-    nearest_ancestors(:shell)
+    @externals.shell
   end
 
 end

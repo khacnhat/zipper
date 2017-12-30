@@ -1,14 +1,11 @@
 require_relative 'id_splitter'
-require_relative 'nearest_ancestors'
 require 'base64'
 
 class Zipper
 
-  def initialize(parent)
-    @parent = parent
+  def initialize(externals)
+    @externals = externals
   end
-
-  attr_reader :parent
 
   def zip(kata_id)
     manifest = storer.kata_manifest(kata_id)
@@ -87,22 +84,20 @@ class Zipper
     end
   end
 
-  private
+  private # = = = = = = = = = = = = = = = = = =
 
   include IdSplitter
 
-  include NearestAncestors
-
   def storer
-    nearest_ancestors(:storer)
+    @externals.storer
   end
 
   def shell
-    nearest_ancestors(:shell)
+    @externals.shell
   end
 
   def disk
-    nearest_ancestors(:disk)
+    @externals.disk
   end
 
 end

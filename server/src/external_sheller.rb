@@ -1,12 +1,9 @@
-require_relative 'nearest_ancestors'
 
 class ExternalSheller
 
-  def initialize(parent)
-    @parent = parent
+  def initialize(externals)
+    @externals = externals
   end
-
-  attr_reader :parent
 
   def cd_exec(path, *commands)
     # the [[ -d ]] is to avoid spurious [cd path] failure
@@ -35,12 +32,10 @@ class ExternalSheller
     [output, exit_status]
   end
 
-  private
-
-  include NearestAncestors
+  private # = = = = = = = = = = = = = = = = =
 
   def log
-    nearest_ancestors(:log)
+    @externals.log
   end
 
 end
