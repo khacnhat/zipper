@@ -46,7 +46,7 @@ services:
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   storer:
-    user: cyber-dojo
+    user: storer
     image: cyberdojo/storer
     init: true
     container_name: test_zipper_storer_server
