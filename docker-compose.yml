@@ -18,6 +18,7 @@ services:
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
       - CYBER_DOJO_KATAS_ROOT
+      - CYBER_DOJO_ZIPPER_SERVER_PORT
     build:
       context: client
       args:

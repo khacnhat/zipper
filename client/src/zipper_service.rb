@@ -19,7 +19,7 @@ class ZipperService
   end
 
   def port
-    '4587'
+    ENV['CYBER_DOJO_ZIPPER_SERVER_PORT']
   end
 
 end
