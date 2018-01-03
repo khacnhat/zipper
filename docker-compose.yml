@@ -4,46 +4,53 @@ version: '2.2'
 services:
 
   zipper_client:
+    build:
+      context: client
+      args:
+        - CYBER_DOJO_ZIPPER_HOME=${CYBER_DOJO_ZIPPER_HOME}
+        - PORT=${CYBER_DOJO_ZIPPER_CLIENT_PORT}
     user: nobody
     image: cyberdojo/zipper_client
     init: true
     container_name: test_zipper_client
     read_only: true
     tmpfs: /tmp
+    restart: 'no'
     depends_on:
       - zipper
       - storer
     volumes:
-      - ./server/test/katas:${CYBER_DOJO_KATAS_ROOT}:ro
+      - ./client/test:${CYBER_DOJO_ZIPPER_HOME}/test:ro
+      - ./katas:${CYBER_DOJO_KATAS_ROOT}:ro
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
       - CYBER_DOJO_KATAS_ROOT
       - CYBER_DOJO_ZIPPER_SERVICE_NAME
       - CYBER_DOJO_ZIPPER_SERVICE_PORT
-    build:
-      context: client
-      args:
-        - PORT=${CYBER_DOJO_ZIPPER_CLIENT_PORT}
     ports:
       - ${CYBER_DOJO_ZIPPER_CLIENT_PORT}:${CYBER_DOJO_ZIPPER_CLIENT_PORT}
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   zipper:
+    build:
+      context: server
+      args:
+        - CYBER_DOJO_ZIPPER_HOME=${CYBER_DOJO_ZIPPER_HOME}
+        - PORT=${CYBER_DOJO_ZIPPER_SERVICE_PORT}
     user: nobody
     image: cyberdojo/zipper
     init: true
     container_name: test_zipper_server
     read_only: true
     tmpfs: /tmp
+    restart: 'no'
     depends_on:
       - storer
+    volumes:
+      - ./server/test:${CYBER_DOJO_ZIPPER_HOME}/test:ro
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
-    build:
-      context: server
-      args:
-        - PORT=${CYBER_DOJO_ZIPPER_SERVICE_PORT}
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -55,7 +62,7 @@ services:
     read_only: true
     tmpfs: /tmp
     volumes:
-      - ./server/test/katas:${CYBER_DOJO_KATAS_ROOT}:ro
+      - ./katas:${CYBER_DOJO_KATAS_ROOT}:ro
     environment:
       - CYBER_DOJO_KATAS_ROOT
 
