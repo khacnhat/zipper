@@ -3,6 +3,8 @@ require_relative 'http_json_service'
 class StorerService
 
   def initialize(_parent)
+    @hostname = ENV['STORER_HOSTNAME'] || 'storer'
+    @port = ENV['STORER_PORT'] || 4577
   end
 
   def kata_manifest(kata_id)
@@ -25,12 +27,6 @@ class StorerService
 
   include HttpJsonService
 
-  def hostname
-    'storer'
-  end
-
-  def port
-    4577
-  end
+  attr_reader :hostname, :port
 
 end
