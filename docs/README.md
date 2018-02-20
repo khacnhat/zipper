@@ -6,10 +6,10 @@ alt="cyber-dojo yin/yang logo" width="50px" height="50px"/>
 
 # cyberdojo/zipper docker image
 
-- A micro-service for [cyber-dojo](http://cyber-dojo.org).
-- Creates a tgz file of a kata or a traffic-light.
+- A docker-containerized micro-service for [cyber-dojo](http://cyber-dojo.org).
+- Creates a tgz file of a practice-session or an individual traffic-light.
 
-- API:
+API:
   * All methods receive their named arguments in a json hash.
   * All methods return a json hash with a single key.
     * If the method completes, the key equals the method's name.
