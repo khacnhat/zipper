@@ -13,9 +13,6 @@ RUN apk --update --no-cache add \
     ruby-dev \
     tar
 
-RUN apk --update --no-cache add \
-    git
-
 # - - - - - - - - - - - - - - - - - -
 # install ruby gems
 # - - - - - - - - - - - - - - - - - -
@@ -29,6 +26,13 @@ RUN apk --update add --virtual build-dependencies build-base \
   && bundle install \
   && apk del build-dependencies build-base \
   && rm -vrf /var/cache/apk/*
+
+# - - - - - - - - - - - - - -
+# install non-commons
+# - - - - - - - - - - - - - -
+
+RUN apk --update --no-cache add \
+    git
 
 # - - - - - - - - - - - - - - - - - -
 # copy source & set ownership
