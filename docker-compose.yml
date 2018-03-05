@@ -7,7 +7,7 @@ services:
     build:
       context: client
       args:
-        - CYBER_DOJO_ZIPPER_HOME=${CYBER_DOJO_ZIPPER_HOME}
+        - CYBER_DOJO_HOME=${CYBER_DOJO_HOME}
         - PORT=${CYBER_DOJO_ZIPPER_CLIENT_PORT}
     user: nobody
     image: cyberdojo/zipper_client
@@ -20,7 +20,7 @@ services:
       - zipper
       - storer
     volumes:
-      - ./client/test:${CYBER_DOJO_ZIPPER_HOME}/test:ro
+      - ./client/test:${CYBER_DOJO_HOME}/test:ro
       - ./katas:${CYBER_DOJO_KATAS_ROOT}:ro
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
@@ -36,7 +36,7 @@ services:
     build:
       context: server
       args:
-        - CYBER_DOJO_ZIPPER_HOME=${CYBER_DOJO_ZIPPER_HOME}
+        - CYBER_DOJO_HOME=${CYBER_DOJO_HOME}
         - PORT=${CYBER_DOJO_ZIPPER_SERVICE_PORT}
     user: nobody
     image: cyberdojo/zipper
@@ -48,7 +48,7 @@ services:
     depends_on:
       - storer
     volumes:
-      - ./server/test:${CYBER_DOJO_ZIPPER_HOME}/test:ro
+      - ./server/test:${CYBER_DOJO_HOME}/test:ro
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
 

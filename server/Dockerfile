@@ -20,9 +20,9 @@ RUN apk --update --no-cache add \
 # install ruby gems
 # - - - - - - - - - - - - - - - - - -
 
-ARG                CYBER_DOJO_ZIPPER_HOME
-COPY    Gemfile  ${CYBER_DOJO_ZIPPER_HOME}/
-WORKDIR          ${CYBER_DOJO_ZIPPER_HOME}
+ARG                CYBER_DOJO_HOME
+COPY    Gemfile  ${CYBER_DOJO_HOME}/
+WORKDIR          ${CYBER_DOJO_HOME}
 
 RUN apk --update add --virtual build-dependencies build-base \
   && bundle config --global silence_root_warning 1 \
@@ -34,8 +34,8 @@ RUN apk --update add --virtual build-dependencies build-base \
 # copy source & set ownership
 # - - - - - - - - - - - - - - - - - -
 
-COPY . ${CYBER_DOJO_ZIPPER_HOME}
-RUN  chown -R nobody:nogroup ${CYBER_DOJO_ZIPPER_HOME}
+COPY . ${CYBER_DOJO_HOME}
+RUN  chown -R nobody:nogroup ${CYBER_DOJO_HOME}
 USER nobody
 
 # - - - - - - - - - - - - - - - - - -
