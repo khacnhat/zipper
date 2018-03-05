@@ -9,10 +9,12 @@ LABEL maintainer=jon@jaggersoft.com
 
 RUN apk --update --no-cache add \
     bash \
-    git \
     ruby-bundler \
     ruby-dev \
     tar
+
+RUN apk --update --no-cache add \
+    git
 
 # - - - - - - - - - - - - - - - - - -
 # install ruby gems
