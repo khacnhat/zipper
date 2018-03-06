@@ -47,40 +47,30 @@ class Zipper
   def zip_tag(kata_id, avatar_name, tag)
     visible_files = storer.tag_visible_files(kata_id, avatar_name, tag)
     visible_files.delete('output')
+    manifest = storer.kata_manifest(kata_id)
+    manifest['visible_filenames'] = visible_files.keys.sort
+    %w( visible_files id exercise created ).each do |key|
+      manifest.delete(key)
+    end
+
+    # Assumes kata is from after start-point re-architecture
     Dir.mktmpdir("zipper") do |tmp_zip_path|
+      # save the manifest
       tag_path = "#{tmp_zip_path}/#{kata_id}/#{avatar_name}/#{tag}"
       tag_dir = disk[tag_path]
       tag_dir.make
-
-      # Assumes kata is from after start-point re-architecture
-      kata_manifest = storer.kata_manifest(kata_id)
-      start_point_manifest = {}
-      start_point_manifest['visible_filenames'] = visible_files.keys.sort
-      required = [ 'display_name', 'image_name' ]
-      required.each do |key|
-        start_point_manifest[key] = kata_manifest[key]
-      end
-      optional = [ 'filename_extension', 'tab_size' ]
-      optional.each do |key|
-        start_point_manifest[key] = kata_manifest[key]
-      end
-      patched = 'progress_regexs'
-      if kata_manifest[patched] != []
-        start_point_manifest[patched] = kata_manifest[patched]
-      end
-      # strip out optional entries that weren't there
-      start_point_manifest.delete_if { |_,value| value.nil? }
-      tag_dir.write('manifest.json', JSON.pretty_unparse(start_point_manifest))
-
+      tag_dir.write('manifest.json', JSON.pretty_unparse(manifest))
+      # save the visible files
       visible_files.each do |pathed_filename, content|
         src_dir = disk[tag_path + '/' + File.dirname(pathed_filename)]
         src_dir.make
         src_dir.write(File.basename(pathed_filename), content)
       end
+      # tar up the dir holding the manifest and visible files
       tgz_filename = "#{tmp_zip_path}/#{kata_id}_#{avatar_name}_#{tag}.tgz"
       tar_cmd = "tar -zcf #{tgz_filename} #{kata_id}/#{avatar_name}/#{tag}"
       shell.cd_exec(tmp_zip_path, tar_cmd)
-      File.open(tgz_filename, 'rb') { |file | Base64.encode64(file.read) }
+      File.open(tgz_filename, 'rb') { |file| Base64.encode64(file.read) }
     end
   end
 
