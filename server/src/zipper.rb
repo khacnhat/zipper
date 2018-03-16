@@ -15,7 +15,7 @@ class Zipper
       kata_dir = disk[kata_path]
       kata_dir.make
       kata_dir.write_json('manifest.json', manifest)
-      storer.started_avatars(kata_id).each do |avatar_name|
+      storer.avatars_started(kata_id).each do |avatar_name|
         avatar_path = "#{kata_path}/#{avatar_name}"
         avatar_dir = disk[avatar_path]
         avatar_dir.make

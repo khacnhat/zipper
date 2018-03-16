@@ -11,7 +11,7 @@ class StorerService
     get(__method__, kata_id)
   end
 
-  def started_avatars(kata_id)
+  def avatars_started(kata_id)
     get(__method__, kata_id)
   end
 

@@ -57,7 +57,7 @@ class ZipTest < TestBase
       diagnostic = "#{id} manifests are NOT the same"
       assert_equal storer_manifest, zipper_manifest, diagnostic
 
-      storer.started_avatars(id).each do |avatar_name|
+      storer.avatars_started(id).each do |avatar_name|
         avatar_path = "#{kata_path}/#{avatar_name}"
         zipper_rags = disk[avatar_path].read_json('increments.json')
         storer_rags = storer.avatar_increments(id, avatar_name)
