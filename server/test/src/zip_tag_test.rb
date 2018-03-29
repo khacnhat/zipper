@@ -68,20 +68,20 @@ class ZipTagTest < ZipperTestBase
     skid = started_kata_args[0][kata_id=0]
     skan = started_kata_args[0][avatar_name=1]
     args = [
-      ['',   'salmon', 0,      'kata_id'    ],
-      ['XX', 'salmon', 0,      'kata_id'    ],
-      [ukid, '',       0,      'avatar_name'],
-      [ukid, 'xxx',    0,      'avatar_name'],
-      [ukid, 'salmon', 0,      'avatar_name'],
-      [skid, skan,    '',      'tag'        ],
-      [skid, skan,  'xx',      'tag'        ],
-      [skid, skan,     1,      'tag'        ],
+      ['',   'salmon', 0,      'kata_id:malformed'    ],
+      ['XX', 'salmon', 0,      'kata_id:malformed'    ],
+      [ukid, '',       0,      'avatar_name:malformed'],
+      [ukid, 'xxx',    0,      'avatar_name:malformed'],
+      [skid, skan,    '',      'tag:malformed'        ],
+      [skid, skan,  'xx',      'tag:malformed'        ],
+      [ukid, 'salmon', 0,      'avatar_name:invalid'  ],
+      [skid, skan,     1,      'tag:invalid'          ],
     ]
-    args.each do |kata_id, avatar_name, tag, arg_name|
+    args.each do |kata_id, avatar_name, tag, msg|
       error = assert_raises(StandardError) {
         zip_tag(kata_id, avatar_name, tag)
       }
-      assert error.message.end_with?("invalid #{arg_name}"), error.message
+      assert error.message.end_with?(msg), error.message
     end
   end
 

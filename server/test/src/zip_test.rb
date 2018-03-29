@@ -18,7 +18,7 @@ class ZipTest < ZipperTestBase
   test 'BEC',
   'zip with empty id raises' do
     error = assert_raises(StandardError) { zip(id = '') }
-    assert error.message.end_with? 'invalid kata_id'
+    assert error.message.end_with? 'kata_id:malformed'
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -26,7 +26,7 @@ class ZipTest < ZipperTestBase
   test '849',
   'zip with bad id raises' do
     error = assert_raises(StandardError) { zip(id = 'XX') }
-    assert error.message.end_with? 'invalid kata_id'
+    assert error.message.end_with? 'kata_id:malformed'
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

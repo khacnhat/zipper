@@ -11,17 +11,11 @@ class ZipTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '8BE',
-  'zip empty kata_id raises' do
+  'zip raises when kata_id is malformed' do
     error = assert_raises(StandardError) { zip(kata_id = ' ') }
-    assert error.message.end_with?('invalid kata_id'), error.message
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '8BF',
-  'zip bad kata_id raises' do
+    assert error.message.end_with?('kata_id:malformed'), error.message
     error = assert_raises(StandardError) { zip(kata_id = 'XX') }
-    assert error.message.end_with?('invalid kata_id'), error.message
+    assert error.message.end_with?('kata_id:malformed'), error.message
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - -
