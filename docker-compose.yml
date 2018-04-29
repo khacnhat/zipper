@@ -10,9 +10,9 @@ services:
         - CYBER_DOJO_HOME=${CYBER_DOJO_HOME}
         - PORT=${CYBER_DOJO_ZIPPER_CLIENT_PORT}
     user: nobody
-    image: cyberdojo/zipper_client
+    image: cyberdojo/zipper-client
     init: true
-    container_name: test_zipper_client
+    container_name: test-zipper-client
     read_only: true
     tmpfs: /tmp
     restart: 'no'
@@ -41,7 +41,7 @@ services:
     user: nobody
     image: cyberdojo/zipper
     init: true
-    container_name: test_zipper_server
+    container_name: test-zipper-server
     read_only: true
     tmpfs: /tmp
     restart: 'no'
@@ -58,7 +58,7 @@ services:
     user: storer
     image: cyberdojo/storer
     init: true
-    container_name: test_zipper_storer_server
+    container_name: test-zipper-storer-server
     read_only: true
     tmpfs: /tmp
     volumes:

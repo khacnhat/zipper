@@ -26,6 +26,6 @@ wait_till_up()
   exit 1
 }
 
-wait_till_up 'test_zipper_server'
-wait_till_up 'test_zipper_client'
-wait_till_up 'test_zipper_storer_server'
+wait_till_up 'test-zipper-server'
+wait_till_up 'test-zipper-client'
+wait_till_up 'test-zipper-storer-server'
