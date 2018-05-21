@@ -2,7 +2,11 @@ require_relative 'test_base'
 
 class ZipTagTest < TestBase
 
-  def self.hex_prefix; '7C880'; end
+  def self.hex_prefix
+    '7C880'
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '2A4',
   'zip_tag raises when kata_id is malformed' do

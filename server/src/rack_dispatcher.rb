@@ -9,6 +9,8 @@ class RackDispatcher
     request = Rack::Request.new(env)
     @args = JSON.parse(request.body.read)
     case request.path_info
+      when /sha/
+        body = invoke('sha')
       when /zip_tag/
         body = invoke('zip_tag', kata_id, avatar_name, tag)
       when /zip/

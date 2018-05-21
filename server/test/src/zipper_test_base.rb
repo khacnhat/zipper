@@ -10,6 +10,12 @@ class ZipperTestBase < HexMiniTest
     Zipper.new(self)
   end
 
+  # - - - - - - - - - - - - - - - - - - - - -
+
+  def sha
+    zipper.sha
+  end
+
   def zip(kata_id)
     zipper.zip(kata_id)
   end
@@ -17,6 +23,8 @@ class ZipperTestBase < HexMiniTest
   def zip_tag(kata_id, avatar_name, tag)
     zipper.zip_tag(kata_id, avatar_name, tag)
   end
+
+  # - - - - - - - - - - - - - - - - - - - - -
 
   def unstarted_kata_id
     'DADD67B4EF' # C (gcc), assert [no progress_regexs]

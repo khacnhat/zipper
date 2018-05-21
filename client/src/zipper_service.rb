@@ -2,6 +2,10 @@ require_relative 'http_service'
 
 class ZipperService
 
+  def sha
+    get(__method__)
+  end
+
   def zip(kata_id)
     get(__method__, kata_id)
   end
