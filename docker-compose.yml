@@ -8,7 +8,7 @@ services:
       context: client
       args:
         - ALPINE_VERSION=${ALPINE_VERSION}
-        - CYBER_DOJO_HOME=${CYBER_DOJO_HOME}
+        - ZIPPER_HOME=${ZIPPER_HOME}
     user: nobody
     image: cyberdojo/zipper-client
     expose: [ "${ZIPPER_CLIENT_PORT}" ]
@@ -21,7 +21,7 @@ services:
       - zipper
       - storer
     volumes:
-      - ./client/test:${CYBER_DOJO_HOME}/test:ro
+      - ./client/test:${ZIPPER_HOME}/test:ro
       - ./katas:${CYBER_DOJO_KATAS_ROOT}:ro
     environment:
       - ZIPPER_COVERAGE_ROOT
@@ -37,7 +37,7 @@ services:
       context: server
       args:
         - ALPINE_VERSION=${ALPINE_VERSION}
-        - CYBER_DOJO_HOME=${CYBER_DOJO_HOME}
+        - ZIPPER_HOME=${ZIPPER_HOME}
         - SHA=${SHA}
     user: nobody
     image: cyberdojo/zipper
@@ -50,7 +50,7 @@ services:
     depends_on:
       - storer
     volumes:
-      - ./server/test:${CYBER_DOJO_HOME}/test:ro
+      - ./server/test:${ZIPPER_HOME}/test:ro
     environment:
       - ZIPPER_SERVICE_PORT
       - STORER_SERVICE_PORT
