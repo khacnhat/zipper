@@ -23,7 +23,7 @@ class ZipperService
   end
 
   def port
-    ENV['ZIPPER_SERVICE_PORT']
+    ENV['ZIPPER_SERVICE_PORT'].to_i
   end
 
 end
