@@ -19,11 +19,11 @@ class ZipperService
   include HttpService
 
   def hostname
-    ENV['CYBER_DOJO_ZIPPER_SERVICE_NAME']
+    ENV['ZIPPER_SERVICE_NAME']
   end
 
   def port
-    ENV['CYBER_DOJO_ZIPPER_SERVICE_PORT']
+    ENV['ZIPPER_SERVICE_PORT']
   end
 
 end

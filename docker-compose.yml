@@ -9,9 +9,9 @@ services:
       args:
         - ALPINE_VERSION=${ALPINE_VERSION}
         - CYBER_DOJO_HOME=${CYBER_DOJO_HOME}
-        - PORT=${CYBER_DOJO_ZIPPER_CLIENT_PORT}
     user: nobody
     image: cyberdojo/zipper-client
+    expose: [ "${ZIPPER_CLIENT_PORT}" ]
     init: true
     container_name: test-zipper-client
     read_only: true
@@ -26,10 +26,9 @@ services:
     environment:
       - CYBER_DOJO_COVERAGE_ROOT
       - CYBER_DOJO_KATAS_ROOT
-      - CYBER_DOJO_ZIPPER_SERVICE_NAME
-      - CYBER_DOJO_ZIPPER_SERVICE_PORT
-    ports:
-      - ${CYBER_DOJO_ZIPPER_CLIENT_PORT}:${CYBER_DOJO_ZIPPER_CLIENT_PORT}
+      - ZIPPER_SERVICE_NAME=zipper
+      - ZIPPER_SERVICE_PORT
+      - ZIPPER_CLIENT_PORT
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -39,12 +38,12 @@ services:
       args:
         - ALPINE_VERSION=${ALPINE_VERSION}
         - CYBER_DOJO_HOME=${CYBER_DOJO_HOME}
-        - PORT=${CYBER_DOJO_ZIPPER_SERVICE_PORT}
         - SHA=${SHA}
     user: nobody
     image: cyberdojo/zipper
     init: true
     container_name: test-zipper-server
+    expose: [ "${ZIPPER_SERVICE_PORT}" ]
     read_only: true
     tmpfs: /tmp
     restart: 'no'
@@ -53,6 +52,8 @@ services:
     volumes:
       - ./server/test:${CYBER_DOJO_HOME}/test:ro
     environment:
+      - ZIPPER_SERVICE_PORT
+      - STORER_SERVICE_PORT
       - CYBER_DOJO_COVERAGE_ROOT
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -62,10 +63,12 @@ services:
     image: cyberdojo/storer
     init: true
     container_name: test-zipper-storer-server
+    expose: [ "${STORER_SERVICE_PORT}" ]
     read_only: true
     tmpfs: /tmp
     volumes:
       - ./katas:${CYBER_DOJO_KATAS_ROOT}:ro
     environment:
+      - STORER_SERVICE_PORT
       - CYBER_DOJO_KATAS_ROOT
 

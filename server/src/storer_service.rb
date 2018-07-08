@@ -4,7 +4,7 @@ class StorerService
 
   def initialize(_parent)
     @hostname = ENV['STORER_HOSTNAME'] || 'storer'
-    @port = 4577
+    @port = ENV['STORER_SERVICE_PORT'].to_i
   end
 
   def kata_manifest(kata_id)

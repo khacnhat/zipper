@@ -41,8 +41,4 @@ USER nobody
 # bring it up
 # - - - - - - - - - - - - - - - - - -
 
-ARG PORT
-EXPOSE ${PORT}
-ENV PORT=${PORT}
-
 CMD [ "./up.sh" ]
