@@ -7,6 +7,7 @@ services:
     build:
       context: client
       args:
+        - ALPINE_VERSION=${ALPINE_VERSION}
         - CYBER_DOJO_HOME=${CYBER_DOJO_HOME}
         - PORT=${CYBER_DOJO_ZIPPER_CLIENT_PORT}
     user: nobody
@@ -36,6 +37,7 @@ services:
     build:
       context: server
       args:
+        - ALPINE_VERSION=${ALPINE_VERSION}
         - CYBER_DOJO_HOME=${CYBER_DOJO_HOME}
         - PORT=${CYBER_DOJO_ZIPPER_SERVICE_PORT}
         - SHA=${SHA}

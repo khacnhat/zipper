@@ -1,4 +1,5 @@
-FROM  alpine:latest
+ARG ALPINE_VERSION
+FROM  alpine:${ALPINE_VERSION}
 LABEL maintainer=jon@jaggersoft.com
 
 # - - - - - - - - - - - - - - - - - -
@@ -9,9 +10,10 @@ LABEL maintainer=jon@jaggersoft.com
 
 RUN apk --update --no-cache add \
     bash \
+    tar \
+    git \
     ruby-bundler \
-    ruby-dev \
-    tar
+    ruby-dev
 
 # - - - - - - - - - - - - - - - - - -
 # install ruby gems
@@ -26,13 +28,6 @@ RUN apk --update add --virtual build-dependencies build-base \
   && bundle install \
   && apk del build-dependencies build-base \
   && rm -vrf /var/cache/apk/*
-
-# - - - - - - - - - - - - - -
-# install non-commons
-# - - - - - - - - - - - - - -
-
-RUN apk --update --no-cache add \
-    git
 
 # - - - - - - - - - - - - - - - - - -
 # copy source & set ownership
