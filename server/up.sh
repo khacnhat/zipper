@@ -6,7 +6,7 @@ set -e
 bundle exec rackup \
   --warn \
   --host 0.0.0.0 \
-  --port ${ZIPPER_SERVICE_PORT} \
+  --port 4587 \
   --server thin \
   --env production \
     config.ru

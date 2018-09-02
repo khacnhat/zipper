@@ -1,5 +1,4 @@
-ARG   ALPINE_VERSION
-FROM  alpine:${ALPINE_VERSION}
+FROM  alpine:3.7
 LABEL maintainer=jon@jaggersoft.com
 
 # - - - - - - - - - - - - - - - - - -
@@ -19,7 +18,7 @@ RUN apk --update --no-cache add \
 # install ruby gems
 # - - - - - - - - - - - - - - - - - -
 
-ARG                ZIPPER_HOME
+ARG                ZIPPER_HOME=/app
 COPY    Gemfile  ${ZIPPER_HOME}/
 WORKDIR          ${ZIPPER_HOME}
 
@@ -48,5 +47,6 @@ RUN echo ${SHA} > ${ZIPPER_HOME}/sha.txt
 # bring it up
 # - - - - - - - - - - - - - - - - - -
 
+EXPOSE 4587
 CMD [ "./up.sh" ]
 

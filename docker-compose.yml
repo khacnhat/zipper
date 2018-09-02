@@ -6,12 +6,8 @@ services:
   zipper_client:
     build:
       context: client
-      args:
-        - ALPINE_VERSION=${ALPINE_VERSION}
-        - ZIPPER_HOME=${ZIPPER_HOME}
     user: nobody
     image: cyberdojo/zipper-client
-    expose: [ "${ZIPPER_CLIENT_PORT}" ]
     init: true
     container_name: test-zipper-client
     read_only: true
@@ -20,15 +16,6 @@ services:
     depends_on:
       - zipper
       - storer
-    volumes:
-      - ./client/test:${ZIPPER_HOME}/test:ro
-      - ./katas:${CYBER_DOJO_KATAS_ROOT}:ro
-    environment:
-      - ZIPPER_COVERAGE_ROOT
-      - CYBER_DOJO_KATAS_ROOT
-      - ZIPPER_SERVICE_NAME=zipper
-      - ZIPPER_SERVICE_PORT
-      - ZIPPER_CLIENT_PORT
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -36,25 +23,16 @@ services:
     build:
       context: server
       args:
-        - ALPINE_VERSION=${ALPINE_VERSION}
-        - ZIPPER_HOME=${ZIPPER_HOME}
-        - SHA=${SHA}
+        - SHA
     user: nobody
     image: cyberdojo/zipper
     init: true
     container_name: test-zipper-server
-    expose: [ "${ZIPPER_SERVICE_PORT}" ]
     read_only: true
     tmpfs: /tmp
     restart: 'no'
     depends_on:
       - storer
-    volumes:
-      - ./server/test:${ZIPPER_HOME}/test:ro
-    environment:
-      - ZIPPER_SERVICE_PORT
-      - STORER_SERVICE_PORT
-      - ZIPPER_COVERAGE_ROOT
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -63,12 +41,7 @@ services:
     image: cyberdojo/storer
     init: true
     container_name: test-zipper-storer-server
-    expose: [ "${STORER_SERVICE_PORT}" ]
     read_only: true
     tmpfs: /tmp
     volumes:
-      - ./katas:${CYBER_DOJO_KATAS_ROOT}:ro
-    environment:
-      - STORER_SERVICE_PORT
-      - CYBER_DOJO_KATAS_ROOT
-
+      - ./katas:/usr/src/cyber-dojo/katas:ro
