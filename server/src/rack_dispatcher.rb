@@ -9,7 +9,8 @@ class RackDispatcher
     zipper = Zipper.new(self)
     request = Rack::Request.new(env)
     name, args = validated_name_args(request)
-    triple(200, { name => zipper.send(name, *args) })
+    result = zipper.send(name, *args)
+    json_triple(200, { name => result })
   rescue => error
     info = {
       'exception' => {
@@ -20,7 +21,7 @@ class RackDispatcher
     }
     $stderr.puts JSON.pretty_generate(info)
     $stderr.flush
-    triple(400, info)
+    json_triple(400, info)
   end
 
   private # = = = = = = = = = = = = = = = = = = =
@@ -38,7 +39,7 @@ class RackDispatcher
     [name, args]
   end
 
-  def triple(n, body)
+  def json_triple(n, body)
     [ n, { 'Content-Type' => 'application/json' }, [ body.to_json ] ]
   end
 
