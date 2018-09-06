@@ -1,3 +1,4 @@
+require_relative 'client_error'
 require_relative 'externals'
 require_relative 'zipper'
 require 'json'
@@ -21,7 +22,7 @@ class RackDispatcher
     }
     $stderr.puts JSON.pretty_generate(info)
     $stderr.flush
-    json_triple(400, info)
+    json_triple(status(error), info)
   end
 
   private # = = = = = = = = = = = = = = = = = = =
@@ -34,13 +35,21 @@ class RackDispatcher
       when /^zip_tag$/              then [kata_id, avatar_name, tag]
       when /^zip$/                  then [kata_id]
       else
-        raise ArgumentError.new('json:invalid')
+        raise ClientError, 'json:malformed'
     end
     [name, args]
   end
 
   def json_triple(n, body)
-    [ n, { 'Content-Type' => 'application/json' }, [ body.to_json ] ]
+    [ n, { 'Content-Type' => 'application/json' }, [ to_json(body) ] ]
+  end
+
+  def to_json(o)
+    JSON.pretty_generate(o)
+  end
+
+  def status(error)
+    error.is_a?(ClientError) ? 400 : 500
   end
 
   include Externals
