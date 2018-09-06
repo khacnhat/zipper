@@ -38,8 +38,9 @@ module HttpJsonService # mix-in
   end
 
   def fail_if(name, message, &block)
-    to_raise = ServiceError.new(self.class.name, name, message)
-    fail to_raise unless block.call
+    unless block.call
+      fail ServiceError.new(self.class.name, name, message)
+    end
   end
 
   def pretty(json)
