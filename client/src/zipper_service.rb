@@ -1,4 +1,4 @@
-require_relative 'http_service'
+require_relative 'http_json_service'
 
 class ZipperService
 
@@ -16,7 +16,7 @@ class ZipperService
 
   private
 
-  include HttpService
+  include HttpJsonService
 
   def hostname
     'zipper'

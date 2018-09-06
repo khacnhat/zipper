@@ -17,16 +17,30 @@ class ZipTest < ZipperTestBase
 
   test 'BEC',
   'zip with empty id raises' do
-    error = assert_raises(StandardError) { zip(id = '') }
-    assert error.message.end_with? 'kata_id:malformed'
+    error = assert_raises { zip(id = '') }
+    assert_equal 'ServiceError', error.class.name
+    assert_equal 'StorerService', error.service_name
+    assert_equal 'kata_manifest', error.method_name
+    exception = JSON.parse(error.message)
+    refute_nil exception
+    assert_equal 'ArgumentError', exception['class']
+    assert_equal 'kata_id:malformed', exception['message']
+    assert_equal 'Array', exception['backtrace'].class.name
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '849',
   'zip with bad id raises' do
-    error = assert_raises(StandardError) { zip(id = 'XX') }
-    assert error.message.end_with? 'kata_id:malformed'
+    error = assert_raises { zip(id = 'XX') }
+    assert_equal 'ServiceError', error.class.name
+    assert_equal 'StorerService', error.service_name
+    assert_equal 'kata_manifest', error.method_name
+    exception = JSON.parse(error.message)
+    refute_nil exception
+    assert_equal 'ArgumentError', exception['class']
+    assert_equal 'kata_id:malformed', exception['message']
+    assert_equal 'Array', exception['backtrace'].class.name
   end
 
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

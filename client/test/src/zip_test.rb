@@ -11,11 +11,35 @@ class ZipTest < TestBase
   # - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '8BE',
+  'zip raises when kata_id is empty' do
+    error = assert_raises { zip(kata_id = '') }
+    assert_equal 'ServiceError', error.class.name
+    assert_equal 'ZipperService', error.service_name
+    assert_equal 'zip', error.method_name
+    exception = JSON.parse(error.message)
+    refute_nil exception
+    assert_equal 'ServiceError', exception['class']
+    json = JSON.parse(exception['message'])
+    assert_equal 'ArgumentError', json['class']
+    assert_equal 'kata_id:malformed', json['message']
+    assert_equal 'Array', json['backtrace'].class.name
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test '8BF',
   'zip raises when kata_id is malformed' do
-    error = assert_raises(StandardError) { zip(kata_id = ' ') }
-    assert error.message.end_with?('kata_id:malformed'), error.message
-    error = assert_raises(StandardError) { zip(kata_id = 'XX') }
-    assert error.message.end_with?('kata_id:malformed'), error.message
+    error = assert_raises { zip(kata_id = '--') }
+    assert_equal 'ServiceError', error.class.name
+    assert_equal 'ZipperService', error.service_name
+    assert_equal 'zip', error.method_name
+    exception = JSON.parse(error.message)
+    refute_nil exception
+    assert_equal 'ServiceError', exception['class']
+    json = JSON.parse(exception['message'])
+    assert_equal 'ArgumentError', json['class']
+    assert_equal 'kata_id:malformed', json['message']
+    assert_equal 'Array', json['backtrace'].class.name
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - -

@@ -77,11 +77,18 @@ class ZipTagTest < ZipperTestBase
       [ukid, 'salmon', 0,      'avatar_name:invalid'  ],
       [skid, skan,     1,      'tag:invalid'          ],
     ]
-    args.each do |kata_id, avatar_name, tag, msg|
-      error = assert_raises(StandardError) {
+    args.each do |kata_id, avatar_name, tag, message|
+      error = assert_raises {
         zip_tag(kata_id, avatar_name, tag)
       }
-      assert error.message.end_with?(msg), error.message
+      assert_equal 'ServiceError', error.class.name
+      assert_equal 'StorerService', error.service_name
+      assert_equal 'tag_visible_files', error.method_name
+      exception = JSON.parse(error.message)
+      refute_nil exception
+      assert_equal 'ArgumentError', exception['class']
+      assert_equal message, exception['message']
+      assert_equal 'Array', exception['backtrace'].class.name
     end
   end
 
