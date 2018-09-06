@@ -52,29 +52,4 @@ class RackDispatcher
 
   request_args :kata_id, :avatar_name, :tag
 
-=begin
-  def X_call(env)
-    request = Rack::Request.new(env)
-    @args = JSON.parse(request.body.read)
-    case request.path_info
-      when /sha/
-        body = invoke('sha')
-      when /zip_tag/
-        body = invoke('zip_tag', kata_id, avatar_name, tag)
-      when /zip/
-        body = invoke('zip', kata_id)
-    end
-    [ 200, { 'Content-Type' => 'application/json' }, [ body.to_json ] ]
-  end
-
-  def X_invoke(name, *args)
-    zipper = Zipper.new(self)
-    { name => zipper.send(name, *args) }
-    #triple(400, info)
-    #rescue Exception => e
-    #log << "EXCEPTION: #{e.class.name}.#{name} #{e.message}"
-    #{ 'exception' => e.message }
-  end
-=end
-
 end
