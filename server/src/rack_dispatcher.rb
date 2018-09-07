@@ -10,7 +10,7 @@ class RackDispatcher
     zipper = Zipper.new(self)
     request = Rack::Request.new(env)
     name, args = validated_name_args(request)
-    result = zipper.send(name, *args)
+    result = zipper.public_send(name, *args)
     json_triple(200, { name => result })
   rescue => error
     info = {
