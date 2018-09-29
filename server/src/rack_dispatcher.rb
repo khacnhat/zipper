@@ -6,30 +6,35 @@ require 'rack'
 
 class RackDispatcher
 
+  def initialize
+    @zipper = Zipper.new(self)
+    @request_class = Rack::Request
+  end
+
   def call(env)
-    zipper = Zipper.new(self)
-    request = Rack::Request.new(env)
-    name, args = validated_name_args(request)
-    result = zipper.public_send(name, *args)
-    json_response(200, { name => result })
+    request = @request_class.new(env)
+    path = request.path_info[1..-1] # lose leading /
+    body = request.body.read
+    name, args = validated_name_args(path, body)
+    result = @zipper.public_send(name, *args)
+    json_response(200, plain({ name => result }))
   rescue => error
-    info = {
+    diagnostic = pretty({
       'exception' => {
         'class' => error.class.name,
         'message' => error.message,
         'backtrace' => error.backtrace
       }
-    }
-    $stderr.puts pretty(info)
+    })
+    $stderr.puts(diagnostic)
     $stderr.flush
-    json_response(status(error), info)
+    json_response(status(error), diagnostic)
   end
 
   private # = = = = = = = = = = = = = = = = = = =
 
-  def validated_name_args(request)
-    name = request.path_info[1..-1] # lose leading /
-    @args = JSON.parse(request.body.read)
+  def validated_name_args(name, body)
+    @args = JSON.parse(body)
     args = case name
       when /^sha$/                  then []
       when /^zip_tag$/              then [kata_id, avatar_name, tag]
@@ -41,15 +46,26 @@ class RackDispatcher
   end
 
   def json_response(status, body)
-    [ status, { 'Content-Type' => 'application/json' }, [ pretty(body) ] ]
+    [ status,
+      { 'Content-Type' => 'application/json' },
+      [ body ]
+    ]
   end
 
-  def pretty(o)
-    JSON.pretty_generate(o)
+  def plain(body)
+    JSON.generate(body)
+  end
+
+  def pretty(body)
+    JSON.pretty_generate(body)
   end
 
   def status(error)
-    error.is_a?(ClientError) ? 400 : 500
+    if error.is_a?(ClientError)
+      400 # client_error
+    else
+      500 # server_error
+    end
   end
 
   include Externals
