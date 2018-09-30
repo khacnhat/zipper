@@ -3,17 +3,17 @@
 readonly ROOT_DIR="$( cd "$( dirname "${0}" )" && cd .. && pwd )"
 readonly MY_NAME="${ROOT_DIR##*/}"
 
-readonly ZIPPER_COVERAGE_ROOT=/tmp/coverage
-
 readonly SERVER_CID=`docker ps --all --quiet --filter "name=${MY_NAME}-server"`
 readonly CLIENT_CID=`docker ps --all --quiet --filter "name=${MY_NAME}-client"`
+
+readonly COVERAGE_ROOT=/tmp/coverage
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 run_server_tests()
 {
   docker exec \
-    --env ZIPPER_COVERAGE_ROOT=${ZIPPER_COVERAGE_ROOT} \
+    --env COVERAGE_ROOT=${COVERAGE_ROOT} \
     "${SERVER_CID}" \
       sh -c "cd /app/test && ./run.sh ${*}"
   server_status=$?
@@ -21,8 +21,8 @@ run_server_tests()
   # You can't [docker cp] from a tmpfs, you have to tar-pipe out.
   docker exec "${SERVER_CID}" \
     tar Ccf \
-      "$(dirname "${ZIPPER_COVERAGE_ROOT}")" \
-      - "$(basename "${ZIPPER_COVERAGE_ROOT}")" \
+      "$(dirname "${COVERAGE_ROOT}")" \
+      - "$(basename "${COVERAGE_ROOT}")" \
         | tar Cxf "${ROOT_DIR}/server/" -
 
   echo "Coverage report copied to ${MY_NAME}/server/coverage/"
@@ -34,7 +34,7 @@ run_server_tests()
 run_client_tests()
 {
   docker exec \
-    --env ZIPPER_COVERAGE_ROOT=${ZIPPER_COVERAGE_ROOT} \
+    --env COVERAGE_ROOT=${COVERAGE_ROOT} \
     "${CLIENT_CID}" \
       sh -c "cd /app/test && ./run.sh ${*}"
   client_status=$?
@@ -42,8 +42,8 @@ run_client_tests()
   # You can't [docker cp] from a tmpfs, you have to tar-pipe out.
   docker exec "${CLIENT_CID}" \
     tar Ccf \
-      "$(dirname "${ZIPPER_COVERAGE_ROOT}")" \
-      - "$(basename "${ZIPPER_COVERAGE_ROOT}")" \
+      "$(dirname "${COVERAGE_ROOT}")" \
+      - "$(basename "${COVERAGE_ROOT}")" \
         | tar Cxf "${ROOT_DIR}/client/" -
 
   echo "Coverage report copied to ${MY_NAME}/client/coverage/"
