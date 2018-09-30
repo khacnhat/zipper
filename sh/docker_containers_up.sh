@@ -2,6 +2,7 @@
 set -e
 
 readonly ROOT_DIR="$( cd "$( dirname "${0}" )" && cd .. && pwd )"
+readonly MY_NAME="${ROOT_DIR##*/}"
 
 docker-compose \
   --file "${ROOT_DIR}/docker-compose.yml" \
@@ -26,6 +27,6 @@ wait_till_up()
   exit 1
 }
 
-wait_till_up 'test-zipper-server'
-wait_till_up 'test-zipper-client'
-wait_till_up 'test-zipper-storer-server'
+wait_till_up "test-${MY_NAME}-server"
+wait_till_up "test-${MY_NAME}-client"
+wait_till_up "test-${MY_NAME}-storer-server"
