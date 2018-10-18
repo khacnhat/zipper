@@ -20,9 +20,10 @@ class ZipTest < TestBase
     refute_nil exception
     assert_equal 'ServiceError', exception['class']
     json = JSON.parse(exception['message'])
-    assert_equal 'ArgumentError', json['class']
+    assert_equal 'StorerService', json['class']
     assert_equal 'kata_id:malformed', json['message']
     assert_equal 'Array', json['backtrace'].class.name
+    assert_equal 'String', json['backtrace'][0].class.name
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - -
@@ -37,9 +38,10 @@ class ZipTest < TestBase
     refute_nil exception
     assert_equal 'ServiceError', exception['class']
     json = JSON.parse(exception['message'])
-    assert_equal 'ArgumentError', json['class']
+    assert_equal 'StorerService', json['class']
     assert_equal 'kata_id:malformed', json['message']
     assert_equal 'Array', json['backtrace'].class.name
+    assert_equal 'String', json['backtrace'][0].class.name
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - -

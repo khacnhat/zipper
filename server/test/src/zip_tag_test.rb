@@ -86,9 +86,10 @@ class ZipTagTest < ZipperTestBase
       assert_equal 'tag_visible_files', error.method_name
       exception = JSON.parse(error.message)
       refute_nil exception
-      assert_equal 'ArgumentError', exception['class']
+      assert_equal 'StorerService', exception['class']
       assert_equal message, exception['message']
       assert_equal 'Array', exception['backtrace'].class.name
+      assert_equal 'String', exception['backtrace'][0].class.name
     end
   end
 
