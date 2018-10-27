@@ -44,4 +44,4 @@ services:
     read_only: true
     tmpfs: /tmp
     volumes:
-      - ./katas:/usr/src/cyber-dojo/katas:ro
+      - ./test/katas:/usr/src/cyber-dojo/katas:ro
