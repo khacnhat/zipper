@@ -21,7 +21,7 @@ services:
 
   zipper:
     build:
-      context: server
+      context: .
       args:
         - SHA
     user: nobody
