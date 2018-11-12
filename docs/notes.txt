@@ -1,0 +1,19 @@
+
+download functionality will be offline when big refactoring goes live.
+
+what functionality to offer when it comes back online?
+
+individual-download
+   - offer existing format.
+      /katas/39/52/zT/...
+      For use when copying from one server to another.
+   - offer file-expanded version?
+   - offer git-based version?
+
+group-download
+   - offer existing format
+       /katas/...
+       /groups/...
+   - offer file-expanded version?
+   - offer git-based version?
+   
