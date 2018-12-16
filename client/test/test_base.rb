@@ -2,7 +2,7 @@ require_relative 'external_disk'
 require_relative 'external_sheller'
 require_relative 'hex_mini_test'
 require_relative 'storer_service'
-require_relative '../../src/zipper_service'
+require_relative '../src/zipper_service'
 
 class TestBase < HexMiniTest
 

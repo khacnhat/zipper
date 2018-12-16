@@ -1,7 +1,7 @@
 require 'base64'
 require_relative 'zipper_test_base'
 require_relative 'null_logger'
-require_relative '../../src/id_splitter'
+require_relative '../src/id_splitter'
 
 class ZipTest < ZipperTestBase
 

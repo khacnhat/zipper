@@ -1,6 +1,6 @@
 require_relative 'hex_mini_test'
-require_relative '../../src/externals'
-require_relative '../../src/zipper'
+require_relative '../src/externals'
+require_relative '../src/zipper'
 
 class ZipperTestBase < HexMiniTest
 

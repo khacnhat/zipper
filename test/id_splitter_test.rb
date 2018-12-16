@@ -1,5 +1,5 @@
 require_relative 'zipper_test_base'
-require_relative '../../src/id_splitter'
+require_relative '../src/id_splitter'
 
 class IdSplitterTest < ZipperTestBase
 
