@@ -1,12 +1,12 @@
 FROM  cyberdojo/rack-base
 LABEL maintainer=jon@jaggersoft.com
 
-ARG                            ZIPPER_HOME=/app
-COPY .                       ${ZIPPER_HOME}
-RUN  chown -R nobody:nogroup ${ZIPPER_HOME}
+ARG                            HOME=/app
+COPY .                       ${HOME}
+RUN  chown -R nobody:nogroup ${HOME}
 
 ARG SHA
-RUN echo ${SHA} > ${ZIPPER_HOME}/sha.txt
+RUN echo ${SHA} > ${HOME}/sha.txt
 
 EXPOSE 4587
 USER nobody
