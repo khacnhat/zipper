@@ -1,8 +1,8 @@
 FROM  cyberdojo/rack-base
 LABEL maintainer=jon@jaggersoft.com
 
-ARG                            HOME=/app
-COPY .                       ${HOME}
+ARG HOME=/app
+COPY . ${HOME}
 RUN  chown -R nobody:nogroup ${HOME}
 
 ARG SHA
