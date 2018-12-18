@@ -8,7 +8,7 @@ class Zipper
   end
 
   def sha
-    IO.read('/app/sha.txt').strip
+    ENV['SHA']
   end
 
   def zip(kata_id)

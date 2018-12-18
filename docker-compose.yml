@@ -22,6 +22,8 @@ services:
   zipper:
     build:
       context: .
+      args:
+        - SHA
     user: nobody
     image: cyberdojo/zipper
     init: true
