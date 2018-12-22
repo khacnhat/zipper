@@ -16,8 +16,8 @@ jobs:
             echo "${DOCKER_PASS}" \
               | docker login -u "${DOCKER_USER}" --password-stdin
             ./pipe_build_up_test.sh
-            docker tag cyberdojo/zipper:latest cyberdojo/zipper:${CIRCLE_SHA1:0:7}
-            docker tag cyberdojo/zipper:latest cyberdojo/zipper:beta
+            docker tag  cyberdojo/zipper:latest cyberdojo/zipper:${CIRCLE_SHA1:0:7}
+            docker tag  cyberdojo/zipper:latest cyberdojo/zipper:beta
             docker push cyberdojo/zipper:${CIRCLE_SHA1:0:7}
             docker push cyberdojo/zipper:beta
 
