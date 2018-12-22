@@ -10,7 +10,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: build zipper docker image and push image to docker hub
+          name: build zipper docker image and push to docker hub
           command: |
             set -e
             echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
