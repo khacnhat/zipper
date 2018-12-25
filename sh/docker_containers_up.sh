@@ -51,7 +51,7 @@ wait_till_up()
 
 # - - - - - - - - - - - - - - - - - - - -
 
-exit_unless_started_cleanly()
+exit_unless_clean()
 {
   local name="${1}"
   local docker_logs=$(docker logs "${name}")
@@ -80,8 +80,8 @@ docker-compose \
 
 readonly MY_NAME=zipper
 
-wait_until_ready            "test-${MY_NAME}-server" 4587
-exit_unless_started_cleanly "test-${MY_NAME}-server"
+wait_until_ready  "test-${MY_NAME}-server" 4587
+exit_unless_clean "test-${MY_NAME}-server"
 
 wait_till_up "test-${MY_NAME}-client"
 wait_till_up "test-${MY_NAME}-storer-server"
