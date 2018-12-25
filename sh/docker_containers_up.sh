@@ -14,7 +14,7 @@ wait_until_ready()
   if [ ! -z ${DOCKER_MACHINE_NAME} ]; then
     cmd="docker-machine ssh ${DOCKER_MACHINE_NAME} ${cmd}"
   fi
-  echo -n "Checking ${name} is ready"
+  echo -n "Waiting until ${name} is ready"
   while [ $(( max_tries -= 1 )) -ge 0 ] ; do
     echo -n '.'
     if eval ${cmd} ; then
@@ -25,7 +25,7 @@ wait_until_ready()
     fi
   done
   echo 'FAIL'
-  echo "${name} not ready after 20 tries"
+  echo "${name} not ready after ${max_tries} tries"
   docker logs ${name}
   exit 1
 }
@@ -34,17 +34,18 @@ wait_until_ready()
 
 wait_till_up()
 {
+  local name="${1}"
   local n=10
   while [ $(( n -= 1 )) -ge 0 ]
   do
-    if docker ps --filter status=running --format '{{.Names}}' | grep -q ^${1}$ ; then
+    if docker ps --filter status=running --format '{{.Names}}' | grep -q ^${name}$ ; then
       return
     else
       sleep 0.5
     fi
   done
-  echo "${1} not up after 5 seconds"
-  docker logs "${1}"
+  echo "${name} not up after 5 seconds"
+  docker logs "${name}"
   exit 1
 }
 
@@ -79,7 +80,7 @@ docker-compose \
 
 readonly MY_NAME=zipper
 
-wait_until_ready "test-${MY_NAME}-server" 4587
+wait_until_ready            "test-${MY_NAME}-server" 4587
 exit_unless_started_cleanly "test-${MY_NAME}-server"
 
 wait_till_up "test-${MY_NAME}-client"
