@@ -28,6 +28,8 @@ services:
     image: cyberdojo/zipper
     init: true
     container_name: test-zipper-server
+    ports:
+      - 4587:4587
     read_only: true
     tmpfs: /tmp
     restart: 'no'
