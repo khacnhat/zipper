@@ -25,7 +25,7 @@ services:
       args:
         - SHA
     user: nobody
-    image: cyberdojo/zipper
+    image: khacnhat/zipper-dojo
     init: true
     container_name: test-zipper-server
     ports:
